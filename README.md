@@ -1,6 +1,9 @@
 # Vagrant::R10k
 
-vagrant-r10k is a `Vagrant <http://www.vagrantup.com/>`_ 1.2+ middleware plugin to allow you to have just a Puppetfile and manifests in your vagrant project, and pull in the required modules via `r10k <https://github.com/adrienthebo/r10k>`_.
+vagrant-r10k is a `Vagrant <http://www.vagrantup.com/>`_ 1.2+ middleware plugin to allow you to have just a Puppetfile and
+manifests in your vagrant project, and pull in the required modules via `r10k <https://github.com/adrienthebo/r10k>`_. This
+plugin only works with the 'puppet' provisioner, not a puppet server. It expects you to have a Puppetfile in the same repository
+as your Vagrantfile.
 
 ## Installation
 
@@ -8,7 +11,8 @@ vagrant-r10k is a `Vagrant <http://www.vagrantup.com/>`_ 1.2+ middleware plugin 
 
 ## Usage
 
-TODO: Write usage instructions here
+Add the following to your Vagrantfile, before the puppet section:
+
 
 ## Contributing
 
@@ -17,6 +21,10 @@ TODO: Write usage instructions here
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
+
+## Debugging
+
+Exporting ``VAGRANT_LOG=debug`` will also turn on debug-level logging for r10k.
 
 ## Acknowlegements
 
