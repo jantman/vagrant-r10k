@@ -12,15 +12,23 @@ module VagrantPlugins
       def validate(machine)
         errors = _detected_errors
 
+        return {} if puppet_dir == UNSET_VALUE and puppetfile_path == UNSET_VALUE
+
+        if puppet_dir == UNSET_VALUE
+          errors << "config.r10k.puppet_dir must be set"
+          return { "vagrant-r10k" => errors }
+        end
+
         puppet_dir_path = File.join(machine.env.root_path, puppet_dir)
-        if !File.directory?(puppet_dir_path)
-              errors << "puppet_dir directory '#{puppet_dir_path}' does not exist"
+        errors << "puppet_dir directory '#{puppet_dir_path}' does not exist" if !File.directory?(puppet_dir_path)
+
+        if puppetfile_path == UNSET_VALUE
+          errors << "config.r10k.puppetfile_path must be set"
+          return { "vagrant-r10k" => errors }
         end
 
         puppetfile = File.join(machine.env.root_path, puppetfile_path)
-        if !File.file?(puppetfile)
-              errors << "puppetfile '#{puppetfile}' does not exist"
-        end
+        errors << "puppetfile '#{puppetfile}' does not exist" if !File.file?(puppetfile)
 
         { "vagrant-r10k" => errors }
       end

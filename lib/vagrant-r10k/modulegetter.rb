@@ -36,8 +36,19 @@ module VagrantPlugins
         require 'r10k/puppetfile'
         require 'r10k/task_runner'
         require 'r10k/task/puppetfile'
+
         @env = env
         env_dir = @env[:root_path]
+
+        # since this plugin runs in a hackish way (to force it to be before puppet provisioner's
+        # config validation), check here that our config items are set, else bail out 
+        unset = Vagrant::Plugin::V2::Config::UNSET_VALUE
+        if @env[:machine].config.r10k.puppet_dir == unset or @env[:machine].config.r10k.puppetfile_path == unset
+          @env[:ui].detail "vagrant-r10k: puppet_dir and/or puppetfile_path not set in config; not running"
+          @app.call(env)
+          return
+        end
+
         puppetfile_path = File.join(env_dir, @env[:machine].config.r10k.puppetfile_path)
         module_path = nil
         manifest_file = nil
