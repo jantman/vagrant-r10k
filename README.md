@@ -22,7 +22,7 @@ conflicting Puppet installation.
 Add the following to your Vagrantfile, before the puppet section:
 
     config.r10k.puppet_dir = 'dir' # the parent directory that contains your module directory and Puppetfile
-	config.r10k.puppetfile_path = 'dir/Puppetfile' # the path to your Puppetfile, within the repo
+    config.r10k.puppetfile_path = 'dir/Puppetfile' # the path to your Puppetfile, within the repo
 
 For the following example directory structure:
 
@@ -30,12 +30,12 @@ For the following example directory structure:
     ├── README.md
     ├── Vagrantfile
     ├── docs
-    │   └── foo.md
+    │   └── foo.md
     ├── puppet
-    │   ├── Puppetfile
-    │   ├── manifests
-    │   │   └── default.pp
-    │   └── modules
+    │   ├── Puppetfile
+    │   ├── manifests
+    │   │   └── default.pp
+    │   └── modules
     └── someproject
         └── foo.something
 
@@ -50,6 +50,46 @@ The configuration for r10k and puppet would look like:
       puppet.manifests_path = "puppet/manifests"
       puppet.manifest_file  = "default.pp"
       puppet.module_path = "puppet/modules"
+    end
+
+If you provide an array of directories in puppet.module_path, vagrant-r10k will use the first directory listed for auto configuration. If you want to let r10k use a different directory, see below.
+
+## Usage with explicit path to module installation directory
+
+Add the following to your Vagrantfile, before the puppet section:
+
+    config.r10k.puppet_dir = 'dir' # the parent directory that contains your module directory and Puppetfile
+    config.r10k.puppetfile_path = 'dir/Puppetfile' # the path to your Puppetfile, within the repo
+    config.r10k.module_path = 'dir/moduledir' # the path where r10k should install its modules (should be same / one of those in puppet provisioner, will be checked)
+
+For the following example directory structure:
+
+    .
+    ├── README.md
+    ├── Vagrantfile
+    ├── docs
+    │   └── foo.md
+    ├── puppet
+    │   ├── Puppetfile
+    │   ├── manifests
+    │   │   └── default.pp
+    │   ├── modules # your own modules
+    │   └── vendor # modules installed by r10k
+    └── someproject
+	└── foo.something
+
+The configuration for r10k and puppet would look like:
+
+    # r10k plugin to deploy puppet modules
+    config.r10k.puppet_dir = "puppet"
+    config.r10k.puppetfile_path = "puppet/Puppetfile"
+    config.r10k.module_path = "puppet/vendor"
+    
+    # Provision the machine with the appliction
+    config.vm.provision "puppet" do |puppet|
+      puppet.manifests_path = "puppet/manifests"
+      puppet.manifest_file  = "default.pp"
+      puppet.module_path = ["puppet/modules", "puppet/vendor"]
     end
 
 ## Contributing
