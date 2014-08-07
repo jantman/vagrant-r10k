@@ -104,6 +104,19 @@ The configuration for r10k and puppet would look like:
 
 Still need to write tests... but they'll be using bundler and rspec.
 
+__Note__ that developming vagrant plugins _requires_ ruby 2.0.0 or newer.
+A `.ruby-version` is provided to get [rvm](https://rvm.io/workflow/projects)
+to use 2.1.1.
+
+For manual testing:
+
+    bundle install --path vendor
+	VAGRANT_LOG=debug bundle exec vagrant up
+
+To use an existing project's Vagrantfile, you can just specify the directory that the Vagrantfile
+is in using the ``VAGRANT_CWD`` environment variable (i.e. prepend ``VAGRANT_CWD=/path/to/project``
+to the above command).
+
 ## Debugging
 
 Exporting ``VAGRANT_LOG=debug`` will also turn on debug-level logging for r10k.
