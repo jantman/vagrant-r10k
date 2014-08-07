@@ -97,8 +97,14 @@ The configuration for r10k and puppet would look like:
 1. Fork it ( https://github.com/jantman/vagrant-r10k/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+4. Increment the version number in `lib/vagrant-r10k/version.rb`
+5. Add yourself to the "Contributors" list below.
+6. Push to the branch (`git push origin my-new-feature`)
+7. Create a new Pull Request
+
+### Contributors
+
+* Oliver Bertuch - [https://github.com/poikilotherm](https://github.com/poikilotherm)
 
 ## Testing
 
