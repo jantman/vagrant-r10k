@@ -50,17 +50,41 @@ module VagrantPlugins
         end
 
         puppetfile_path = File.join(env_dir, @env[:machine].config.r10k.puppetfile_path)
+
         module_path = nil
+        # override the default mechanism for building a module_path with the optional config argument
+        if @env[:machine].config.r10k.module_path != unset
+          module_path = @env[:machine].config.r10k.module_path
+        end
+
         manifest_file = nil
         manifests_path = nil
         @env[:machine].config.vm.provisioners.each do |prov|
           if prov.name == :puppet
-            module_path = File.join(env_dir, prov.config.module_path)
+            # if module_path has been set before, check if it fits to one defined in the provisioner config
+            if module_path != nil
+              if prov.config.module_path.is_a?(Array) and ! prov.config.module_path.include?(module_path) 
+                @env[:ui].detail "vagrant-r10k: module_path \"#{module_path}\" is not within the ones defined in puppet provisioner; not running"
+                @app.call(env)
+                return
+              elsif ! prov.config.module_path.is_a?(Array) and prov.config.module_path != module_path
+                @env[:ui].detail "vagrant-r10k: module_path \"#{module_path}\" is not the same as in puppet provisioner; not running"
+                @app.call(env)
+                return
+              end
+            # no modulepath explict set in config, build one from the provisioner config
+            else
+              module_path = prov.config.module_path.is_a?(Array) ? prov.config.module_path[0] : prov.config.module_path
+              @env[:ui].info "vagrant-r10k: Building the r10k module path with puppet provisioner module_path \"#{module_path}\". (if module_path is an array, first element is used)"
+            end
+
             manifest_file = File.join(env_dir, prov.config.manifest_file)
             manifests_path = File.join(env_dir, prov.config.manifests_path[1])
           end
         end
 
+        # now join the module_path with the env_dir to have an absolute path
+        module_path = File.join(env_dir, module_path)
         @env[:ui].info "vagrant-r10k: Beginning r10k deploy of puppet modules into #{module_path} using #{puppetfile_path}"
 
         if ENV["VAGRANT_LOG"] == "debug"
