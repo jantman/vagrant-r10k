@@ -1,5 +1,7 @@
 # Vagrant::R10k
 
+[![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/0.1.0/active.svg)](http://www.repostatus.org/#active)
+
 vagrant-r10k is a [Vagrant](http://www.vagrantup.com/) 1.2+ middleware plugin to allow you to have just a Puppetfile and
 manifests in your vagrant project, and pull in the required modules via [r10k](https://github.com/adrienthebo/r10k). This
 plugin only works with the 'puppet' provisioner, not a puppet server. It expects you to have a Puppetfile in the same repository
