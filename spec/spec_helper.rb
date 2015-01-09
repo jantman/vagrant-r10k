@@ -5,4 +5,10 @@ $LOAD_PATH.unshift File.expand_path('../lib', __FILE__)
 ENV['VAGRANT_NO_PLUGINS'] = '1'
 
 require 'vagrant-spec/unit'
+
+require 'simplecov'
+SimpleCov.start do
+  add_filter "/vendor/"
+end
+
 require 'vagrant-r10k'
