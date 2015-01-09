@@ -1,9 +1,15 @@
 source 'https://rubygems.org'
 
 group :development do
-  gem "vagrant", git: "https://github.com/mitchellh/vagrant.git"
+  if ENV.has_key?('VAGRANT_VERSION')
+    gem "vagrant", git: "https://github.com/mitchellh/vagrant.git", tag: "v#{ENV['VAGRANT_VERSION']}"
+  else
+    gem "vagrant", git: "https://github.com/mitchellh/vagrant.git", branch: 'master'
+  end
+  # Pinned on 12/10/2014. Compatible with Vagrant 1.5.x, 1.6.x and 1.7.x.
+  gem 'vagrant-spec', :github => 'mitchellh/vagrant-spec', :ref => '1df5a3a'
 end
 
 group :plugins do
-  gem "vagrant-r10k", path: "."
+  gemspec
 end

@@ -133,6 +133,6 @@ Exporting ``VAGRANT_LOG=debug`` will also turn on debug-level logging for r10k.
 
 Thanks to the following people:
 
-* [@adrienthebo](https://github.com/adrienthebo) for [r10k](https://github.com/adrienthebo/r10k)
+* [@adrienthebo](https://github.com/adrienthebo) for [r10k](https://github.com/adrienthebo/r10k) and for [vagrant-pe_build](https://github.com/adrienthebo/vagrant-pe_build) as a wonderful example of unit testing Vagrant plugins.
 * [@garethr](https://github.com/garethr) for [librarian-puppet-vagrant](https://github.com/garethr/librarian-puppet-vagrant) which inspired this plugin
 * [Alex Kahn](http://akahn.net/) of Paperless Post for his [How to Write a Vagrant Middleware](http://akahn.net/2014/05/05/vagrant-middleware.html) blog post, documenting the new middleware API
