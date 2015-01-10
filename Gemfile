@@ -1,4 +1,4 @@
-xbsource 'https://rubygems.org'
+source 'https://rubygems.org'
 
 group :development do
   if ENV.has_key?('VAGRANT_VERSION')
