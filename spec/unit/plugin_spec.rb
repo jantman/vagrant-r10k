@@ -1,31 +1,19 @@
 require 'spec_helper'
 
-require 'vagrant-r10k/modulegetter'
+require 'vagrant-r10k/plugin'
 
-describe VagrantPlugins::R10k::Modulegetter do 
+describe VagrantPlugins::R10k::Plugin do
   include_context 'vagrant-unit'
   let(:test_env) do
     test_env = isolated_environment
     test_env.vagrantfile <<-EOF
 Vagrant.configure('2') do |config|
   config.vm.define :test
-  # r10k plugin to deploy puppet modules
-  # config.r10k.puppet_dir = 'puppet'
-  config.r10k.puppetfile_path = 'puppet/Puppetfile'
-
-  # Provision the machine with the appliction
-  config.vm.provision "puppet" do |puppet|
-    puppet.manifests_path = "puppet/manifests"
-    puppet.manifest_file  = "default.pp"
-    puppet.module_path = "puppet/modules"
-  end
 end
 EOF
     test_env
   end
-  let(:env)              { { env: iso_env, machine: machine, ui: ui, root_path: '/rootpath' } }
-  let(:conf)             { Vagrant::Config::V2::DummyConfig.new() }
-  let(:ui)               { Vagrant::UI::Basic.new() }
+  let(:env)              { { env: iso_env } }
   let(:iso_env)          { test_env.create_vagrant_env ui_class: Vagrant::UI::Basic }
   let(:machine)          { iso_env.machine(:test, :dummy)  }
   # Mock the communicator to prevent SSH commands for being executed.
@@ -34,8 +22,8 @@ EOF
   let(:guest)            { double('guest') }
   let(:app)              { lambda { |env| } }
   let(:plugin)           { register_plugin() }
- 
-  subject { described_class.new(app, env) }
+  
+  subject { described_class.new }
 
   before (:each) do
     machine.stub(:guest => guest)
@@ -47,9 +35,15 @@ EOF
   describe '#call' do
     describe 'puppet_dir unset' do
       it 'should raise an error' do
-        expect(ui).to receive(:detail).with("vagrant-r10k: puppet_dir and/or puppetfile_path not set in config; not running").once
-        puts ui.methods(true)
-        subject.call(env)
+        machine.config.r10k.puppetfile_path = '/foo/bar'
+        #puts "############################################ env methods"
+        #puts env.methods(true)
+        #puts "############################################ subject methods"
+        #puts subject.methods(true)
+        #puts "############################################ plugin methods"
+        #puts plugin.methods(true)
+        x = 1
+        x.should == 2
       end
     end
   end
