@@ -5,6 +5,8 @@
 * Add unit tests for modulegetter and config.
 * Readme updates.
 * Add changelog.
+* Fix bug in newer Vagrant where provider does not have .name ([issue #3](https://github.com/jantman/vagrant-r10k/issues/3))
+* Update README.md
 
 ## 0.1.1 2014-08-07 Jason Antman <jason@jasonantman.com>
 
