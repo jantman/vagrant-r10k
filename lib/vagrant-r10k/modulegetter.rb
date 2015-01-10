@@ -60,7 +60,7 @@ module VagrantPlugins
         manifest_file = nil
         manifests_path = nil
         @env[:machine].config.vm.provisioners.each do |prov|
-          if prov.type == :puppet
+          if prov.name == :puppet
             # if module_path has been set before, check if it fits to one defined in the provisioner config
             if module_path != nil
               if prov.config.module_path.is_a?(Array) and ! prov.config.module_path.include?(module_path) 
