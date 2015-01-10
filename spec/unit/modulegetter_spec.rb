@@ -3,6 +3,8 @@ require_relative 'sharedcontext'
 
 require 'vagrant-r10k/modulegetter'
 require 'r10k/puppetfile'
+require 'r10k/task_runner'
+require 'r10k/task/puppetfile'
 
 describe VagrantPlugins::R10k::Modulegetter do 
   subject { described_class.new(app, env) }
@@ -136,12 +138,17 @@ EOF
         expect(ui).to receive(:info).with(/Beginning r10k deploy/).once
         R10K::Puppetfile.stub(:new)
         expect(R10K::Puppetfile).to receive(:new).with('/rootpath/puppet', '/rootpath/puppet/modules', '/rootpath/puppet/Puppetfile').once
-        R10K::Task::Puppetfile::Sync.stub(:new)
+        R10K::Task::Puppetfile::Sync.stub(:new).and_call_original
         expect(R10K::Task::Puppetfile::Sync).to receive(:new).once
-        R10K::TaskRunner.stub(:append_task)
-        R10K::TaskRunner.stub(:run)
-        expect(R10K::TaskRunner).to receive(:append_task).once
-        expect(R10K::TaskRunner).to receive(:run).once
+        runner = R10K::TaskRunner.new([])
+        R10K::TaskRunner.stub(:new).and_return(runner)
+        R10K::TaskRunner.stub(:append_task).and_call_original
+        runner.stub(:run)
+        runner.stub(:succeeded?).and_return(true)
+        runner.stub(:get_errors).and_return([])
+        expect(runner).to receive(:append_task).once
+        expect(runner).to receive(:run).once
+        expect(ui).to receive(:info).with('vagrant-r10k: Deploy finished').once
         retval = subject.call(env)
         expect(retval).to be_nil
       end
