@@ -99,10 +99,9 @@ The configuration for r10k and puppet would look like:
 1. Fork it ( https://github.com/jantman/vagrant-r10k/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Increment the version number in `lib/vagrant-r10k/version.rb`
-5. Add yourself to the "Contributors" list below.
-6. Push to the branch (`git push origin my-new-feature`)
-7. Create a new Pull Request
+4. Add yourself to the "Contributors" list below.
+5. Push to the branch (`git push origin my-new-feature`)
+6. Create a new Pull Request
 
 ### Contributors
 
@@ -128,6 +127,15 @@ to the above command).
 ## Debugging
 
 Exporting ``VAGRANT_LOG=debug`` will also turn on debug-level logging for r10k.
+
+## Releasing
+
+1. Ensure all tests are passing, coverage is acceptable, etc.
+2. Increment the version number in ``lib/vagrant-r10k/version.rb``
+3. Update CHANGES.md
+4. Push those changes to origin.
+5. ``bundle exec rake build``
+6. ``bundle exec rake release``
 
 ## Acknowlegements
 
