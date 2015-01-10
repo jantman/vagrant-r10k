@@ -5,6 +5,7 @@
 * Add unit tests for modulegetter and config.
 * Readme updates.
 * Add changelog.
+* Fix bug in newer Vagrant where provider does not have .name
 
 ## 0.1.1 2014-08-07 Jason Antman <jason@jasonantman.com>
 
