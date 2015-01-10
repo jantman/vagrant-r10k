@@ -1,5 +1,11 @@
 # Vagrant::R10k
 
+[![Build Status](https://travis-ci.org/jantman/vagrant-r10k.svg?branch=master)](https://travis-ci.org/jantman/vagrant-r10k)
+[![Code Coverage](https://codecov.io/github/jantman/vagrant-r10k/coverage.svg?branch=master)](https://codecov.io/github/jantman/vagrant-r10k?branch=master)
+[![Code Climate](https://codeclimate.com/github/jantman/vagrant-r10k/badges/gpa.svg)](https://codeclimate.com/github/jantman/vagrant-r10k)
+[![Gem Version](https://img.shields.io/gem/v/vagrant-r10k.svg)](https://rubygems.org/gems/vagrant-r10k)
+[![Total Downloads](https://img.shields.io/gem/dt/vagrant-r10k.svg)](https://rubygems.org/gems/vagrant-r10k)
+[![Github Issues](https://img.shields.io/github/issues/jantman/vagrant-r10k.svg)](https://github.com/jantman/vagrant-r10k/issues)
 [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/0.1.0/active.svg)](http://www.repostatus.org/#active)
 
 vagrant-r10k is a [Vagrant](http://www.vagrantup.com/) 1.2+ middleware plugin to allow you to have just a Puppetfile and
