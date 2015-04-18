@@ -10,6 +10,7 @@ group :development do
   gem 'vagrant-spec', :github => 'mitchellh/vagrant-spec', :ref => '1df5a3a'
   gem 'simplecov', :require => false
   gem 'codecov', :require => false
+  gem "rspec_junit_formatter", :require => false
 end
 
 group :plugins do
