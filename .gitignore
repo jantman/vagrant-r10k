@@ -23,3 +23,4 @@ vendor
 Vagrantfile
 .vagrant
 coverage
+results.xml
