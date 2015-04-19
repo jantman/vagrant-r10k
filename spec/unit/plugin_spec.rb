@@ -27,7 +27,7 @@ describe VagrantPlugins::R10k::Plugin do
   end
   context 'config' do
     it 'registers itself' do
-      expect(described_class.components.configs[:top].key?(:r10k)).to be_truthy
+      expect(described_class.components.configs[:top].get(:r10k)).to_not be_nil
     end
     it 'uses the Config class' do
       cfg = described_class.components.configs[:top].get(:r10k)
