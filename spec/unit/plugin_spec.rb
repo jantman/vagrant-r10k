@@ -7,16 +7,6 @@ include SharedExpectations
 
 describe VagrantPlugins::R10k::Plugin do
   include_context 'vagrant-unit'
-  context 'plugin load' do
-    it 'should load normally' do
-      result = load 'vagrant-r10k/plugin.rb', wrap=true
-      expect(result).to be_truthy
-    end
-    it 'should instantiate' do
-      load 'vagrant-r10k/plugin.rb', wrap=true
-      p = described_class.new
-    end
-  end
   context 'unsupported vagrant version' do
     it 'should abort on Vagrant < 1.2' do
       stub_const("Vagrant::VERSION", "1.1.0")
