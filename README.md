@@ -62,7 +62,7 @@ The configuration for r10k and puppet would look like:
 
 If you provide an array of directories in puppet.module_path, vagrant-r10k will use the first directory listed for auto configuration. If you want to let r10k use a different directory, see below.
 
-## Usage with explicit path to module installation directory
+### Usage with explicit path to module installation directory
 
 Add the following to your Vagrantfile, before the puppet section:
 
@@ -100,6 +100,29 @@ The configuration for r10k and puppet would look like:
       puppet.module_path = ["puppet/modules", "puppet/vendor"]
     end
 
+## Getting Help
+
+Bug reports, feature requests, and pull requests are always welcome. At this time, the
+[GitHub Issues Tracker](https://github.com/jantman/vagrant-r10k/issues)
+is the only place for support, so questions and comments are welcome there as well,
+but please be sure they haven't already been asked and answered.
+
+Bug reports should include the following information in order to be investigated:
+
+1. A detailed description of the problem, including the behavior you expected and
+   the actual behavior that you're observing.
+2. The output of ``vagrant plugin list`` showing all of the plugins you're running
+   and their versions.
+3. The versions of Ruby (``ruby --version``) and Vagrant (``vagrant --version``)
+   itself that you're running.
+4. A copy of the Vagrantfile that was being used. Please include all lines in it;
+   if you have any confidential or proprietary information, feel free to replace
+   usernames, passwords, URLs, IPs, etc. with "X"s, but please don't remove
+   large portions of it.
+5. A debug-level log of the command you're having problems with. i.e. if your
+   problem is experienced when running ``vagrant up``, please include the full
+   output of ``VAGRANT_LOG=debug vagrant up``.
+
 ## Contributing
 
 1. Fork it ( https://github.com/jantman/vagrant-r10k/fork )
@@ -113,7 +136,9 @@ The configuration for r10k and puppet would look like:
 
 * Oliver Bertuch - [https://github.com/poikilotherm](https://github.com/poikilotherm)
 
-## Testing
+## Development
+
+### Testing
 
 Still need to write tests... but they'll be using bundler and rspec.
 
@@ -130,11 +155,11 @@ To use an existing project's Vagrantfile, you can just specify the directory tha
 is in using the ``VAGRANT_CWD`` environment variable (i.e. prepend ``VAGRANT_CWD=/path/to/project``
 to the above command).
 
-## Debugging
+### Debugging
 
 Exporting ``VAGRANT_LOG=debug`` will also turn on debug-level logging for r10k.
 
-## Releasing
+### Releasing
 
 1. Ensure all tests are passing, coverage is acceptable, etc.
 2. Increment the version number in ``lib/vagrant-r10k/version.rb``

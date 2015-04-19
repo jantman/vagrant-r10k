@@ -4,6 +4,7 @@
 
 * Use relative requires in ``plugin.rb``
 * Change gemspec from ``bundler ~> 1.6`` to ``bundler ~> 1.5`` for testing Vagrant 1.5.0
+* Some updates to ``README.md``
 * Testing changes
   * Ignore ``spec/`` in coverage
   * Add increased coverage of ``plugin.rb``
