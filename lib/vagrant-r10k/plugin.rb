@@ -1,3 +1,4 @@
+# :nocov:
 begin
   require "vagrant"
 rescue LoadError
@@ -7,6 +8,7 @@ end
 if Vagrant::VERSION < "1.2.0"
   raise "The Vagrant r10k plugin is only compatible with Vagrant 1.2+"
 end
+# :nocov:
 
 require_relative "version"
 require_relative "modulegetter"

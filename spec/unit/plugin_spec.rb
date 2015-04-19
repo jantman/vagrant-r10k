@@ -7,12 +7,6 @@ include SharedExpectations
 
 describe VagrantPlugins::R10k::Plugin do
   include_context 'vagrant-unit'
-  context 'unsupported vagrant version' do
-    it 'should abort on Vagrant < 1.2' do
-      stub_const("Vagrant::VERSION", "1.1.0")
-      expect { load 'vagrant-r10k/plugin.rb', wrap=true }.to raise_error(RuntimeError, "The Vagrant r10k plugin is only compatible with Vagrant 1.2+")
-    end
-  end
   context 'action hooks' do
     let(:hook) { double(append: true, prepend: true) }
     it 'should set hooks' do
