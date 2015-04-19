@@ -1,0 +1,5 @@
+--format documentation
+--color
+--order random
+--format RspecJunitFormatter
+--out results.xml
