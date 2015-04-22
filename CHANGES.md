@@ -14,6 +14,7 @@
   * Add JUnit XML results output
   * Ignore some un-testable code from coverage analysis
   * Add Travis testing for Vagrant 1.5.0
+  * Downgrade bundler from 1.6 to 1.5 to work with older testing versions
 
 ## 0.2.0 2015-01-10 Jason Antman <jason@jasonantman.com>
 
