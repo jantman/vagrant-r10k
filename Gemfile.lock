@@ -168,7 +168,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.6)
+  bundler (~> 1.5)
   codecov
   rake
   rspec_junit_formatter
