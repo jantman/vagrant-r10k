@@ -138,13 +138,25 @@ Bug reports should include the following information in order to be investigated
 
 ## Development
 
-### Testing
-
-Still need to write tests... but they'll be using bundler and rspec.
-
 __Note__ that developming vagrant plugins _requires_ ruby 2.0.0 or newer.
 A `.ruby-version` is provided to get [rvm](https://rvm.io/workflow/projects)
 to use 2.1.1.
+
+### Unit Tests
+
+    bundle install --path vendor
+    bundle exec rake spec
+
+### Acceptance Tests
+
+Unfortunately, "acceptance" testing Vagrant requires the various providers
+be functional; i.e. to test the [VMWare Providers](https://www.vagrantup.com/vmware)
+requires both a license for them from Hashicorp, and the VMWare products
+themselves. Similarly, testing the AWS providers requires an AWS account and
+actually running EC2 instances. As such, acceptance tests are provided separately
+for each provider.
+
+### Manually Testing Vagrant
 
 For manual testing:
 
