@@ -1,0 +1,10 @@
+# This is currently a noop but will be supported in the future.
+forge 'forge.puppetlabs.com'
+
+mod 'reviewboard',
+  :git => 'https://github.com/jantman/puppet-reviewboard.git',
+  :ref => 'v1.0.1'
+
+mod 'nodemeister',
+  :git => 'https://github.com/jantman/puppet-nodemeister.git',
+  :ref => '0.1.0'
