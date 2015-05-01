@@ -26,8 +26,7 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
     end
 
     it 'deploys once' do
-      #result = assert_execute('vagrant', 'up', "--provider=#{provider}", "--debug")
-      result = assert_execute('vagrant', 'up', "--provider=#{provider}")
+      result = assert_execute('vagrant', 'up', "--provider=#{provider}", "--debug")
       expect(result).to exit_with(0)
       expect(result.stdout).to include('r10k')
       expect(result.stderr).to match(//)
