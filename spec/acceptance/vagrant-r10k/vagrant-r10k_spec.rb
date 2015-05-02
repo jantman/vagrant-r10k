@@ -33,14 +33,7 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
     it 'deploys Puppetfile modules' do
       status("Test: vagrant up")
       up_result = assert_execute('vagrant', 'up', "--provider=#{provider}")
-      expect(up_result).to exit_with(0)
-      expect(up_result.stdout).to include('vagrant-r10k: Building the r10k module path with puppet provisioner module_path "puppet/modules"')
-      expect(up_result.stdout).to include("vagrant-r10k: Beginning r10k deploy of puppet modules into #{environment.workdir}/puppet/modules using #{environment.workdir}/puppet/Puppetfile")
-      expect(up_result.stdout).to include('vagrant-r10k: Deploy finished')
-      expect(up_result.stdout).to include('Running Puppet with default.pp')
-      expect(up_result.stdout).to include('vagrant-r10k puppet run')
-      expect(up_result.stderr).to match(/^$/)
-      puts up_result.stdout
+      ensure_successful_run(up_result, environment.workdir)
 
       status("Test: reviewboard module")
       rb_dir = File.join(environment.workdir, 'puppet', 'modules', 'reviewboard')
@@ -75,8 +68,7 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
       expect(up_result.stderr).to match(/RuntimeError: Puppetfile at .* does not exist/)
       expect(up_result.stdout).to include('vagrant-r10k: Building the r10k module path with puppet provisioner module_path "puppet/modules"')
       # TODO expect(up_result.stdout).to_not include("vagrant-r10k: Beginning r10k deploy of puppet modules")
-      expect(up_result.stdout).to_not include('Running Puppet with default.pp')
-      expect(up_result.stdout).to_not include('vagrant-r10k puppet run')
+      ensure_puppet_didnt_run(up_result)
       expect(up_result.stdout).to_not include('vagrant-r10k: Deploy finished')
     end
   end
@@ -100,8 +92,7 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
       expect(up_result.stdout).to_not include("vagrant-r10k: Beginning r10k deploy of puppet modules")
       expect(up_result.stdout).to_not include('vagrant-r10k: Building the r10k module path with puppet provisioner module_path')
       expect(up_result.stdout).to_not include('vagrant-r10k: Deploy finished')
-      expect(up_result.stdout).to include('Running Puppet with default.pp')
-      expect(up_result.stdout).to include('vagrant-r10k puppet run')
+      ensure_puppet_ran(up_result)
     end
   end
 
@@ -122,10 +113,32 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
       expect(up_result.stdout).to include("vagrant-r10k: Beginning r10k deploy of puppet modules")
       expect(up_result.stdout).to include('vagrant-r10k: Building the r10k module path with puppet provisioner module_path')
       expect(up_result.stdout).to_not include('vagrant-r10k: Deploy finished')
-      expect(up_result.stdout).to_not include('Running provisioner')
-      expect(up_result.stdout).to_not include('Running Puppet with default.pp')
-      expect(up_result.stdout).to_not include('vagrant-r10k puppet run')
+      ensure_puppet_didnt_run(up_result)
       expect(up_result.stderr).to include("Invalid syntax in Puppetfile at")
     end
+  end
+
+  # checks for a successful up run with r10k deployment and puppet provisioning
+  def ensure_successful_run(up_result, workdir)
+    expect(up_result).to exit_with(0)
+    expect(up_result.stdout).to include('vagrant-r10k: Building the r10k module path with puppet provisioner module_path "puppet/modules"')
+    expect(up_result.stdout).to include("vagrant-r10k: Beginning r10k deploy of puppet modules into #{workdir}/puppet/modules using #{workdir}/puppet/Puppetfile")
+    expect(up_result.stdout).to include('vagrant-r10k: Deploy finished')
+    expect(up_result.stderr).to match(/^$/)
+    ensure_puppet_ran(up_result)
+  end
+
+  # ensure that the puppet provisioner ran with default.pp
+  def ensure_puppet_ran(up_result)
+    expect(up_result.stdout).to include('Running provisioner: puppet')
+    expect(up_result.stdout).to include('Running Puppet with default.pp')
+    expect(up_result.stdout).to include('vagrant-r10k puppet run')
+  end
+
+  # ensure that the puppet provisioner DIDNT run
+  def ensure_puppet_didnt_run(up_result)
+    expect(up_result.stdout).to_not include('Running provisioner: puppet')
+    expect(up_result.stdout).to_not include('Running Puppet with default.pp')
+    expect(up_result.stdout).to_not include('vagrant-r10k puppet run')
   end
 end
