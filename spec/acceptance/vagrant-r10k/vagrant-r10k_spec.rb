@@ -25,11 +25,21 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
       assert_execute("vagrant", "destroy", "--force")
     end
 
-    it 'deploys once' do
-      result = assert_execute('vagrant', 'up', "--provider=#{provider}", "--debug")
+    it 'deploys the modules' do
+      result = assert_execute('vagrant', 'up', "--provider=#{provider}")
       expect(result).to exit_with(0)
+      puts result.stdout
       expect(result.stdout).to include('r10k')
       expect(result.stderr).to match(//)
+      # reviewboard module deploy
+      rb_dir = File.join(environment.workdir, 'puppet', 'modules', 'reviewboard')
+      expect(File.directory?(rb_dir)).to be_truthy
+      # nodemeister module deploy
+      nm_dir = File.join(environment.workdir, 'puppet', 'modules', 'nodemeister')
+      expect(File.directory?(nm_dir)).to be_truthy
+      # result = assert_execute('gitcheck.sh', 'puppet/modules/reviewboard')
+      # reviewboard v1.0.1 -> cdb8d7a186846b49326cec1cfb4623bd77529b04 git@github.com:jantman/puppet-reviewboard.git
+      # nodemeister 0.1.0 -> 3a504b5f66ebe1853bda4ee065fce18118958d84 git@github.com:jantman/puppet-nodemeister.git
     end
   end
 end
