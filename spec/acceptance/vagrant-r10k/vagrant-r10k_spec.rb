@@ -18,20 +18,22 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
   describe 'configured correctly' do
     before do
       environment.skeleton('correct')
-      puts "Isolated Environment: homedir=#{environment.homedir} workdir=#{environment.workdir}"
+      status("Isolated Environment: #{environment.workdir}")
     end
 
     after do
-      assert_execute("vagrant", "destroy", "--force")
+      assert_execute("vagrant", "destroy", "--force", log: false)
     end
 
     it 'deploys the modules' do
+      status("Isolated Environment: #{environment.workdir}")
+      status("Test: vagrant up output")
       result = assert_execute('vagrant', 'up', "--provider=#{provider}")
       expect(result).to exit_with(0)
-      puts result.stdout
       expect(result.stdout).to include('r10k')
       expect(result.stderr).to match(//)
       # reviewboard module deploy
+      status("Test: reviewboard module")
       rb_dir = File.join(environment.workdir, 'puppet', 'modules', 'reviewboard')
       expect(File.directory?(rb_dir)).to be_truthy
       # nodemeister module deploy
@@ -40,6 +42,11 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
       # result = assert_execute('gitcheck.sh', 'puppet/modules/reviewboard')
       # reviewboard v1.0.1 -> cdb8d7a186846b49326cec1cfb4623bd77529b04 git@github.com:jantman/puppet-reviewboard.git
       # nodemeister 0.1.0 -> 3a504b5f66ebe1853bda4ee065fce18118958d84 git@github.com:jantman/puppet-nodemeister.git
+    end
+
+    it 'something else' do
+      status("Isolated Environment: #{environment.workdir}")
+      expect(0).to eq(0)
     end
   end
 end
