@@ -31,6 +31,8 @@ def get_box_path(provider)
     boxurl = 'https://s3.amazonaws.com/puppetlabs-vagrantcloud/centos-7.0-x86_64-virtualbox-puppet-1.0.1.box'
   elsif provider == 'aws'
     boxurl = 'https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box'
+  # elsif provider == 'vmware'
+  #  boxurl = 'https://s3.amazonaws.com/puppetlabs-vagrantcloud/centos-7.0-x86_64-vmware-puppet-1.0.1.box'
   else
     STDERR.puts "ERROR: no box URL known for provider '#{provider}'"
     exit!(1)
@@ -45,6 +47,15 @@ def get_box_path(provider)
   return box_path
 end
 
+def fix_results_xml()
+  # mainly a workaround for https://github.com/sj26/rspec_junit_formatter/issues/31
+  return if ! File.exist?('results.xml')
+  puts "Munging invalid control chracters in results.xml"
+  content = File.read('results.xml')
+  content.gsub!(/\033/, "\uFFFD")
+  File.open('results.xml', 'w') { |file| file.write(content) }
+end
+
 desc "Display the list of available rake tasks"
 task :help do
   system("rake -T")
@@ -52,7 +63,6 @@ end
 
 namespace :acceptance do
   providers = ['virtualbox', 'aws']
-  all_provider_tasks = providers.map { |prov| "acceptance:#{prov}" }
 
   # isolate our temp directories so we can easily remove them
   tmp_dir_path = '/tmp/vagrant-r10k-spec'
@@ -66,9 +76,7 @@ namespace :acceptance do
       box_path = get_box_path(provider)
       system_or_die("VS_PROVIDER=#{provider} VS_BOX_PATH=#{box_path} TMPDIR=#{tmp_dir_path} bundle exec vagrant-spec test")
       system("rm -Rf #{tmp_dir_path}/*")
+      fix_results_xml()
     end
   end
-
-  desc "Run acceptance tests for **ALL** providers"
-  task :all => all_provider_tasks
 end
