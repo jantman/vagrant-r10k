@@ -6,8 +6,8 @@ group :development do
   else
     gem "vagrant", git: "https://github.com/mitchellh/vagrant.git", branch: 'master'
   end
-  # Pinned on 12/10/2014. Compatible with Vagrant 1.5.x, 1.6.x and 1.7.x.
-  gem 'vagrant-spec', :github => 'mitchellh/vagrant-spec', :ref => '1df5a3a'
+  # pinned to branch for https://github.com/mitchellh/vagrant-spec/pull/16
+  gem 'vagrant-spec', :github => 'jantman/vagrant-spec', :ref => 'junit'
   gem 'simplecov', :require => false
   gem 'codecov', :require => false
   gem "rspec_junit_formatter", :require => false
