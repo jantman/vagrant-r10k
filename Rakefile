@@ -54,13 +54,17 @@ namespace :acceptance do
   providers = ['virtualbox', 'aws']
   all_provider_tasks = providers.map { |prov| "acceptance:#{prov}" }
 
+  # isolate our temp directories so we can easily remove them
+  tmp_dir_path = '/tmp/vagrant-r10k-spec'
+  Dir.mkdir(tmp_dir_path) unless Dir.exists?(tmp_dir_path)
+
   providers.each do |prov|
     desc "Run acceptance tests for #{prov}"
     task prov do |task|
       provider = task.name.split(':')[1]
       puts "Running acceptance tests for #{provider}"
       box_path = get_box_path(provider)
-      system_or_die("VS_PROVIDER=#{provider} VS_BOX_PATH=#{box_path} bundle exec vagrant-spec test")
+      system_or_die("VS_PROVIDER=#{provider} VS_BOX_PATH=#{box_path} TMPDIR=#{tmp_dir_path} bundle exec vagrant-spec test")
     end
   end
 
