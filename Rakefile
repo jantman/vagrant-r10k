@@ -65,6 +65,7 @@ namespace :acceptance do
       puts "Running acceptance tests for #{provider}"
       box_path = get_box_path(provider)
       system_or_die("VS_PROVIDER=#{provider} VS_BOX_PATH=#{box_path} TMPDIR=#{tmp_dir_path} bundle exec vagrant-spec test")
+      system("rm -Rf #{tmp_dir_path}/*")
     end
   end
 
