@@ -38,6 +38,8 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
       ls_work = assert_execute('find', "#{environment.workdir}", '-ls')
       puts "##### workdir (#{environment.workdir}):"
       puts ls_work.stdout
+      df_tmp = assert_execute('df', '-h', '/tmp')
+      puts "#### df -h /tmp -> #{df_tmp.stdout}"
       status("Test: vagrant up")
       up_result = assert_execute('vagrant', 'up', "--provider=#{provider}")
       expect(up_result).to exit_with(0)
@@ -107,6 +109,8 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
       ls_work = assert_execute('find', "#{environment.workdir}", '-ls')
       puts "##### workdir (#{environment.workdir}):"
       puts ls_work.stdout
+      df_tmp = assert_execute('df', '-h', '/tmp')
+      puts "#### df -h /tmp -> #{df_tmp.stdout}"
       status("Test: vagrant up")
       up_result = execute('vagrant', 'up', "--provider=#{provider}")
       expect(up_result).to exit_with(0)
