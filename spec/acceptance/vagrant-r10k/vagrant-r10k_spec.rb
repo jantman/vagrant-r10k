@@ -18,13 +18,13 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
   let(:name)   { 'single.testbox.spec' }
 
   before do
-    assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
     ENV['VAGRANT_DEFAULT_PROVIDER'] = provider
   end
 
   describe 'configured correctly' do
     before do
       environment.skeleton('correct')
+      assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
     end
     after do
       assert_execute("vagrant", "destroy", "--force", log: false)
