@@ -85,6 +85,7 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
     # this just doesn't run the r10k portion
     before do
       environment.skeleton('different_mod_path')
+      assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
     end
     after do
       assert_execute("vagrant", "destroy", "--force", log: false)
@@ -108,6 +109,7 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
     # r10k runtime failure
     before do
       environment.skeleton('puppetfile_syntax_error')
+      assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
     end
     after do
       assert_execute("vagrant", "destroy", "--force", log: false)
