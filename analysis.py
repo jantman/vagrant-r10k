@@ -37,7 +37,7 @@ def analyze_run(d):
     s += "{n},".format(n=d['mtime'])
     s += "{n},".format(n=d['git_rev'])
     s += "{n},".format(n=len(d['interfaces']))
-    s += "{n},".format(n=len(d['vboxinfo']['hostonlyifs']))
+    s += "{n},".format(n=len(d['vboxinfo'].get('hostonlyifs', [])))
     s += "{n},".format(n=len(d['vboxinfo']['dhcpservers']))
     s += "{n},".format(n=d['junit']['failures'])
     s += "{n},".format(n=d['junit']['errors'])
