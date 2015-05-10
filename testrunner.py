@@ -12,6 +12,7 @@ from copy import deepcopy
 from dealer.git import git
 import sys
 import re
+from time import sleep
 
 out_dir = 'acceptance_results'
 
@@ -180,3 +181,5 @@ if __name__ == "__main__":
     for i in range(start_num, (start_num + num_to_run)):
         print(">>>> Doing test {i}".format(i=i))
         do_test(i, 'bundle exec rake --trace acceptance:virtualbox')
+        print(">>> Sleeping 30s between test runs")
+        sleep(30)
