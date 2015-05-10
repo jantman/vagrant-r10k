@@ -26,6 +26,8 @@ def get_interfaces():
     ifaces = {}
     cmd = 'nmcli -t -f DEVICE,TYPE,STATE d'
     res = commands.getoutput(cmd).strip()
+    if 'nmcli-CRITICAL' in res:
+        return {}
     lines = res.split("\n")
     for line in lines:
         name, dev_type, state = line.split(':')
