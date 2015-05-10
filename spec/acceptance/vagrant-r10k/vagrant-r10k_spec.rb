@@ -61,6 +61,7 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
   describe 'puppet directory missing' do
     before do
       environment.skeleton('no_puppet_dir')
+      assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
     end
     after do
       assert_execute("vagrant", "destroy", "--force", log: false)
