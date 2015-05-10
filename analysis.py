@@ -5,6 +5,7 @@ import os
 import re
 import sys
 from testrunner import out_dir
+from collections import defaultdict
 
 test_base_name = 'provider/virtualbox/vagrant-r10k it should behave like provider/vagrant-r10k '
 test_names = {
@@ -17,6 +18,8 @@ test_names = {
 
 xmltmp_re = re.compile(r"VBoxManage: error: Runtime error opening '[^']+' for reading: -102\(File not found\.\)")
 
+test_results = defaultdict(list)
+
 def find_error(output):
     if xmltmp_re.search(output):
         return "xml.tmp_-102" # Runtime error opening '<tmp path>/home/.config/VirtualBox/VirtualBox.xml-tmp' for reading: -102(File not found.).
@@ -27,25 +30,30 @@ def find_error(output):
     return "unknown"
 
 def analyze_run(d):
-    sys.stdout.write("{n},".format(n=d['num']))
-    sys.stdout.write("{n},".format(n=d['success']))
-    sys.stdout.write("{n},".format(n=d['return_code']))
-    #sys.stdout.write("{n},".format(n=d['duration']))
-    sys.stdout.write("{n},".format(n=len(d['interfaces'])))
-    sys.stdout.write("{n},".format(n=len(d['vboxinfo']['hostonlyifs'])))
-    sys.stdout.write("{n},".format(n=len(d['vboxinfo']['dhcpservers'])))
-    sys.stdout.write("{n},".format(n=d['junit']['failures'])) # count
-    sys.stdout.write("{n},".format(n=d['junit']['errors'])) # count
+    s = ''
+    s += "{n},".format(n=d['num'])
+    s += "{n},".format(n=d['success'])
+    s += "{n},".format(n=d['return_code'])
+    s += "{n},".format(n=d['duration'])
+    s += "{n},".format(n=d['mtime'])
+    s += "{n},".format(n=len(d['interfaces']))
+    s += "{n},".format(n=len(d['vboxinfo']['hostonlyifs']))
+    s += "{n},".format(n=len(d['vboxinfo']['dhcpservers']))
+    s += "{n},".format(n=d['junit']['failures'])
+    s += "{n},".format(n=d['junit']['errors'])
     for test in d['junit']['tests']:
         name = test['name'].replace(test_base_name, '')
         if name in test_names:
             name = test_names[name]
         if test['success']:
-            sys.stdout.write("{n} <pass>,".format(n=name))
+            s += "{n} <pass>,".format(n=name)
+            test_results[name].append('P')
         else:
             err = find_error(test['fail_message'])
-            sys.stdout.write("{n} <FAIL:{e}>,".format(n=name, e=err))
-    sys.stdout.write("\n")
+            s += "{n} <FAIL:{e}>,".format(n=name, e=err)
+            test_results[name].append('F')
+    s += "\n"
+    return s
 
 def do_analysis(dirname):
     results = {}
@@ -53,24 +61,44 @@ def do_analysis(dirname):
     for f in os.listdir(dirname):
         if not json_re.match(f):
             continue
-        with open(os.path.join(dirname, f), 'r') as fh:
+        fpath = os.path.join(dirname, f)
+        with open(fpath, 'r') as fh:
             raw = fh.read()
         tmp = json.loads(raw)
+        tmp['mtime'] = os.path.getmtime(fpath)
         results[tmp['num']] = tmp
     # tmp is now our full data for all tests
+    s = ''
     for num in sorted(results):
-        analyze_run(results[num])
+        s += analyze_run(results[num])
+    return s
 
 if __name__ == "__main__":
-    sys.stdout.write("{n},".format(n='TestNum'))
-    sys.stdout.write("{n},".format(n='Success'))
-    sys.stdout.write("{n},".format(n='RetCode'))
-    #sys.stdout.write("{n},".format(n='Duration'))
-    sys.stdout.write("{n},".format(n='Num_IFaces'))
-    sys.stdout.write("{n},".format(n='Num_VB_HostIfs'))
-    sys.stdout.write("{n},".format(n='Num_VB_DHCPs'))
-    sys.stdout.write("{n},".format(n='Num_Failures'))
-    sys.stdout.write("{n},".format(n='Num_Errors'))
-    sys.stdout.write("Test1,Test2,Test3,Test4,Test5")
-    sys.stdout.write("\n")
-    do_analysis(out_dir)
+    s = ''
+    s += "{n},".format(n='TestNum')
+    s += "{n},".format(n='Success')
+    s += "{n},".format(n='RetCode')
+    s += "{n},".format(n='Duration')
+    s += "{n},".format(n='EndTime')
+    s += "{n},".format(n='Num_IFaces')
+    s += "{n},".format(n='Num_VB_HostIfs')
+    s += "{n},".format(n='Num_VB_DHCPs')
+    s += "{n},".format(n='Num_Failures')
+    s += "{n},".format(n='Num_Errors')
+    s += "Test1,Test2,Test3,Test4,Test5"
+    s += "\n"
+    s += do_analysis(out_dir)
+    print(s)
+    with open('analysis_details.csv', 'w') as fh:
+        fh.write(s)
+    sys.stderr.write("\n\nDetailed analysis written to analysis_details.csv\n\n")
+
+    s = ''
+    for testname in test_results:
+        s += "{t},".format(t=testname)
+        s += ','.join(test_results[testname])
+        s += "\n"
+    print(s)
+    with open('analysis_tests.csv', 'w') as fh:
+        fh.write(s)
+    sys.stderr.write("\n\nPer-test analysis written to analysis_tests.csv\n\n")
