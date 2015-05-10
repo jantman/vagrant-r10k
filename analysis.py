@@ -52,7 +52,7 @@ def analyze_run(d):
         else:
             err = find_error(test['fail_message'])
             s += "{n} <FAIL:{e}>,".format(n=name, e=err)
-            test_results[name].append('F')
+            test_results[name].append(err)
     s += "\n"
     return s
 
@@ -96,11 +96,23 @@ if __name__ == "__main__":
     sys.stderr.write("\n\nDetailed analysis written to analysis_details.csv\n\n")
 
     s = ''
+    r = ''
     for testname in test_results:
         s += "{t},".format(t=testname)
-        s += ','.join(test_results[testname])
+        r += "{t},".format(t=testname)
+        for i in test_results[testname]:
+            if i == 'P':
+                s += 'P,'
+                r += ','
+            else:
+                s += 'F,'
+                r += i + ','
         s += "\n"
+        r += "\n"
     print(s)
+    print(r)
     with open('analysis_tests.csv', 'w') as fh:
         fh.write(s)
+        fh.write(r)
     sys.stderr.write("\n\nPer-test analysis written to analysis_tests.csv\n\n")
+
