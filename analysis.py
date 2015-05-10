@@ -20,13 +20,12 @@ xmltmp_re = re.compile(r"VBoxManage: error: Runtime error opening '[^']+' for re
 
 test_results = defaultdict(list)
 
-def find_error(output):
+def find_error(output, num, name):
     if xmltmp_re.search(output):
         return "xml.tmp_-102" # Runtime error opening '<tmp path>/home/.config/VirtualBox/VirtualBox.xml-tmp' for reading: -102(File not found.).
     elif 'VERR_DISK_FULL' in output:
         return 'VERR_DISK_FULL'
-    print(output)
-    raise SystemExit()
+    raise NotImplementedError("find_error() couldn't find error in output of run {n} test {t}:\n{o}\n".format(o=output, n=num, t=name))
     return "unknown"
 
 def analyze_run(d):
@@ -50,7 +49,7 @@ def analyze_run(d):
             s += "{n} <pass>,".format(n=name)
             test_results[name].append('P')
         else:
-            err = find_error(test['fail_message'])
+            err = find_error(test['fail_message'], d['num'], name)
             s += "{n} <FAIL:{e}>,".format(n=name, e=err)
             test_results[name].append(err)
     s += "\n"
@@ -66,12 +65,15 @@ def do_analysis(dirname):
         with open(fpath, 'r') as fh:
             raw = fh.read()
         tmp = json.loads(raw)
+        #sys.stderr.write("loaded JSON for %s\n" % fpath)
         tmp['mtime'] = os.path.getmtime(fpath)
         results[tmp['num']] = tmp
     # tmp is now our full data for all tests
     s = ''
     for num in sorted(results):
+        #sys.stderr.write("analyzing run %d\n" % num)
         s += analyze_run(results[num])
+    #sys.stderr.write("done analyzing runs\n")
     return s
 
 if __name__ == "__main__":
