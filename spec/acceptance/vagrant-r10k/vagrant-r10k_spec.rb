@@ -31,6 +31,9 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
     end
 
     it 'deploys Puppetfile modules' do
+      status("ls")
+      ls = assert_execute("find #{environment.tempdir} -ls")
+      puts ls.stdout
       status("Test: vagrant up")
       up_result = assert_execute('vagrant', 'up', "--provider=#{provider}")
       expect(up_result).to exit_with(0)
@@ -92,6 +95,9 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
     end
 
     it 'skips r10k deploy' do
+      status("ls")
+      ls = assert_execute("find #{environment.tempdir} -ls")
+      puts ls.stdout
       status("Test: vagrant up")
       up_result = execute('vagrant', 'up', "--provider=#{provider}")
       expect(up_result).to exit_with(0)
