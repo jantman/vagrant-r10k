@@ -27,7 +27,8 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
       assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
     end
     after do
-      assert_execute("vagrant", "destroy", "--force", log: false)
+      assert_execute("vagrant", "destroy", "--force")
+      assert_execute('vagrant', 'box', 'remove', 'vagrantr10kspec', '-f')
     end
 
     it 'deploys Puppetfile modules' do
@@ -74,7 +75,8 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
       assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
     end
     after do
-      assert_execute("vagrant", "destroy", "--force", log: false)
+      assert_execute("vagrant", "destroy", "--force")
+      assert_execute('vagrant', 'box', 'remove', 'vagrantr10kspec', '-f')
     end
 
     it 'errors during config validation' do
@@ -98,7 +100,8 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
       puts "#### executed box add; homedir=#{environment.homedir} workdir=#{environment.workdir}"
     end
     after do
-      assert_execute("vagrant", "destroy", "--force", log: false)
+      assert_execute("vagrant", "destroy", "--force")
+      assert_execute('vagrant', 'box', 'remove', 'vagrantr10kspec', '-f')
     end
 
     it 'skips r10k deploy' do
@@ -131,7 +134,8 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
       assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
     end
     after do
-      assert_execute("vagrant", "destroy", "--force", log: false)
+      assert_execute("vagrant", "destroy", "--force")
+      assert_execute('vagrant', 'box', 'remove', 'vagrantr10kspec', '-f')
     end
 
     it 'fails during module deploy' do
