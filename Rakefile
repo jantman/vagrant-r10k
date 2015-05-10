@@ -28,7 +28,7 @@ def get_box_path(provider)
   boxes_dir = File.join(File.dirname(__FILE__), 'spec', 'boxes')
   Dir.mkdir(boxes_dir) if not File.directory?(boxes_dir)
   if provider == 'virtualbox'
-    boxurl = 'https://atlas.hashicorp.com/puppetlabs/boxes/centos-7.0-64-puppet/versions/1.0.1/providers/virtualbox.box'
+    boxurl = 'https://s3.amazonaws.com/puppetlabs-vagrantcloud/centos-7.0-x86_64-virtualbox-puppet-1.0.1.box'
   elsif provider == 'aws'
     boxurl = 'https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box'
   else
