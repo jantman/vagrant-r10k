@@ -32,8 +32,12 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
 
     it 'deploys Puppetfile modules' do
       status("ls")
-      ls = assert_execute("find #{environment.tempdir} -ls")
-      puts ls.stdout
+      ls_home = assert_execute("find #{environment.homedir} -ls")
+      puts "##### homedir (#{environment.homedir}):"
+      puts ls_home.stdout
+      ls_work = assert_execute("find #{environment.workdir} -ls")
+      puts "##### workdir (#{environment.workdir}):"
+      puts ls_work.stdout
       status("Test: vagrant up")
       up_result = assert_execute('vagrant', 'up', "--provider=#{provider}")
       expect(up_result).to exit_with(0)
