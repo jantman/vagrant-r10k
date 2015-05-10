@@ -39,7 +39,7 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
       expect(up_result.stdout).to include('vagrant-r10k: Deploy finished')
       expect(up_result.stdout).to include('Running Puppet with default.pp')
       expect(up_result.stdout).to include('vagrant-r10k puppet run')
-      expect(up_result.stderr).to match(//)
+      expect(up_result.stderr).to match(/^$/)
       puts up_result.stdout
 
       status("Test: reviewboard module")
@@ -59,6 +59,7 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
   end
 
   describe 'puppet directory missing' do
+    # this is a complete failure
     before do
       environment.skeleton('no_puppet_dir')
       assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
@@ -76,6 +77,53 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
       # TODO expect(up_result.stdout).to_not include("vagrant-r10k: Beginning r10k deploy of puppet modules")
       expect(up_result.stdout).to_not include('Running Puppet with default.pp')
       expect(up_result.stdout).to_not include('vagrant-r10k puppet run')
+      expect(up_result.stdout).to_not include('vagrant-r10k: Deploy finished')
+    end
+  end
+
+  describe 'module path different from Puppet provisioner' do
+    # this just doesn't run the r10k portion
+    before do
+      environment.skeleton('different_mod_path')
+    end
+    after do
+      assert_execute("vagrant", "destroy", "--force", log: false)
+    end
+
+    it 'skips r10k deploy' do
+      status("Test: vagrant up")
+      up_result = execute('vagrant', 'up', "--provider=#{provider}")
+      expect(up_result).to exit_with(0)
+      expect(up_result.stderr).to match(/^$/)
+      expect(up_result.stdout).to include('vagrant-r10k: module_path "puppet/NOTmodules" is not the same as in puppet provisioner; not running')
+      expect(up_result.stdout).to_not include("vagrant-r10k: Beginning r10k deploy of puppet modules")
+      expect(up_result.stdout).to_not include('vagrant-r10k: Building the r10k module path with puppet provisioner module_path')
+      expect(up_result.stdout).to_not include('vagrant-r10k: Deploy finished')
+      expect(up_result.stdout).to include('Running Puppet with default.pp')
+      expect(up_result.stdout).to include('vagrant-r10k puppet run')
+    end
+  end
+
+  describe 'Puppetfile syntax error' do
+    # r10k runtime failure
+    before do
+      environment.skeleton('puppetfile_syntax_error')
+    end
+    after do
+      assert_execute("vagrant", "destroy", "--force", log: false)
+    end
+
+    it 'fails during module deploy' do
+      status("Test: vagrant up")
+      up_result = execute('vagrant', 'up', "--provider=#{provider}")
+      expect(up_result).to exit_with(1)
+      expect(up_result.stdout).to include("vagrant-r10k: Beginning r10k deploy of puppet modules")
+      expect(up_result.stdout).to include('vagrant-r10k: Building the r10k module path with puppet provisioner module_path')
+      expect(up_result.stdout).to_not include('vagrant-r10k: Deploy finished')
+      expect(up_result.stdout).to_not include('Running provisioner')
+      expect(up_result.stdout).to_not include('Running Puppet with default.pp')
+      expect(up_result.stdout).to_not include('vagrant-r10k puppet run')
+      expect(up_result.stderr).to include("Invalid syntax in Puppetfile at")
     end
   end
 end

@@ -1,0 +1,18 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "vagrantr10kspec"
+  config.vm.network :private_network, ip: '10.10.10.29'
+
+  # r10k plugin to deploy puppet modules
+  config.r10k.puppet_dir = "puppet"
+  config.r10k.puppetfile_path = "puppet/Puppetfile"
+
+  # Provision the machine with the appliction
+  config.vm.provision "puppet" do |puppet|
+    puppet.manifests_path = "puppet/manifests"
+    puppet.manifest_file  = "default.pp"
+    puppet.module_path = "puppet/modules"
+  end
+end
