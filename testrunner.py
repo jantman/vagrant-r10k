@@ -162,7 +162,9 @@ def get_next_test_num(dirname):
         m = file_re.match(f)
         if not m:
             continue
-        num = int(m.group(1))
+        n = int(m.group(1))
+        if n > num:
+            num = n
     return (num + 1)
 
 if __name__ == "__main__":
