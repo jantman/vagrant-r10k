@@ -24,11 +24,11 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
   describe 'configured correctly' do
     before do
       environment.skeleton('correct')
-      #assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
+      assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
     end
     after do
       assert_execute("vagrant", "destroy", "--force")
-      #assert_execute('vagrant', 'box', 'remove', 'vagrantr10kspec', '-f')
+      assert_execute('vagrant', 'box', 'remove', 'vagrantr10kspec', '-f')
     end
 
     it 'deploys Puppetfile modules' do
@@ -72,11 +72,11 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
     # this is a complete failure
     before do
       environment.skeleton('no_puppet_dir')
-      #assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
+      assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
     end
     after do
       assert_execute("vagrant", "destroy", "--force")
-      #assert_execute('vagrant', 'box', 'remove', 'vagrantr10kspec', '-f')
+      assert_execute('vagrant', 'box', 'remove', 'vagrantr10kspec', '-f')
     end
 
     it 'errors during config validation' do
@@ -96,12 +96,12 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
     # this just doesn't run the r10k portion
     before do
       environment.skeleton('different_mod_path')
-      #assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
-      #puts "#### executed box add; homedir=#{environment.homedir} workdir=#{environment.workdir}"
+      assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
+      puts "#### executed box add; homedir=#{environment.homedir} workdir=#{environment.workdir}"
     end
     after do
       assert_execute("vagrant", "destroy", "--force")
-      #assert_execute('vagrant', 'box', 'remove', 'vagrantr10kspec', '-f')
+      assert_execute('vagrant', 'box', 'remove', 'vagrantr10kspec', '-f')
     end
 
     it 'skips r10k deploy' do
@@ -131,11 +131,11 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
     # r10k runtime failure
     before do
       environment.skeleton('puppetfile_syntax_error')
-      #assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
+      assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
     end
     after do
       assert_execute("vagrant", "destroy", "--force")
-      #assert_execute('vagrant', 'box', 'remove', 'vagrantr10kspec', '-f')
+      assert_execute('vagrant', 'box', 'remove', 'vagrantr10kspec', '-f')
     end
 
     it 'fails during module deploy' do
