@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/jantman/vagrant-spec.git
-  revision: d62f16d17392f83b23b5c38bd50606fe94bcbb6b
-  ref: d62f16d17392f83b23b5c38bd50606fe94bcbb6b
+  revision: 179ac31c801c0e73cda63ac586fa591e93939224
+  ref: 179ac31c801c0e73cda63ac586fa591e93939224
   specs:
     vagrant-spec (0.0.1)
       childprocess (~> 0.5.0)
