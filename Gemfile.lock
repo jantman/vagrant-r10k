@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/jantman/vagrant-spec.git
-  revision: c25e0cec2712fff9a48b12580aa267175b4357ca
-  ref: junit
+  revision: be07eaaa9d175ac46bccf66446dc1539e1267007
+  ref: junit_and_VBOX_USER_HOME
   specs:
     vagrant-spec (0.0.1)
       childprocess (~> 0.5.0)
