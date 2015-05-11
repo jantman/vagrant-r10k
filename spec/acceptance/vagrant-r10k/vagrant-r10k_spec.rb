@@ -24,6 +24,7 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
   describe 'configured correctly' do
     before do
       environment.skeleton('correct')
+      environment.env['VBOX_USER_HOME'] = environment.homedir.to_s
       assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
     end
     after do
@@ -55,6 +56,7 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
     # this is a complete failure
     before do
       environment.skeleton('no_puppet_dir')
+      environment.env['VBOX_USER_HOME'] = environment.homedir.to_s
       assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
     end
     after do
@@ -77,6 +79,7 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
     # this just doesn't run the r10k portion
     before do
       environment.skeleton('different_mod_path')
+      environment.env['VBOX_USER_HOME'] = environment.homedir.to_s
       assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
     end
     after do
@@ -100,6 +103,7 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
     # r10k runtime failure
     before do
       environment.skeleton('puppetfile_syntax_error')
+      environment.env['VBOX_USER_HOME'] = environment.homedir.to_s
       assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
     end
     after do
