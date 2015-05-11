@@ -7,7 +7,7 @@ group :development do
     gem "vagrant", git: "https://github.com/mitchellh/vagrant.git", branch: 'master'
   end
   # pinned to branch for https://github.com/mitchellh/vagrant-spec/pull/16
-  gem 'vagrant-spec', :github => 'jantman/vagrant-spec', :ref => '179ac31c801c0e73cda63ac586fa591e93939224'
+  gem 'vagrant-spec', :github => 'jantman/vagrant-spec', :ref => 'junit'
   gem 'simplecov', :require => false
   gem 'codecov', :require => false
   gem "rspec_junit_formatter", :require => false
