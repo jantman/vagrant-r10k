@@ -23,17 +23,15 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
 
   describe 'configured correctly' do
     before do
-      environment.skeleton('correct')
-      environment.env['VBOX_USER_HOME'] = environment.homedir.to_s
-      assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
+      setup_before('correct', options)
     end
     after do
-      assert_execute("vagrant", "destroy", "--force", log: false)
+      assert_execute("vagrant", "destroy", "--force")
     end
 
     it 'deploys Puppetfile modules' do
       status("Test: vagrant up")
-      up_result = assert_execute('vagrant', 'up', "--provider=#{provider}")
+      up_result = assert_execute('vagrant', 'up', "--provider=#{provider}", '--debug')
       ensure_successful_run(up_result, environment.workdir)
 
       status("Test: reviewboard module")
@@ -55,12 +53,10 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
   describe 'puppet directory missing' do
     # this is a complete failure
     before do
-      environment.skeleton('no_puppet_dir')
-      environment.env['VBOX_USER_HOME'] = environment.homedir.to_s
-      assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
+      setup_before('no_puppet_dir', options)
     end
     after do
-      assert_execute("vagrant", "destroy", "--force", log: false)
+      assert_execute("vagrant", "destroy", "--force")
     end
 
     it 'errors during config validation' do
@@ -78,12 +74,10 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
   describe 'module path different from Puppet provisioner' do
     # this just doesn't run the r10k portion
     before do
-      environment.skeleton('different_mod_path')
-      environment.env['VBOX_USER_HOME'] = environment.homedir.to_s
-      assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
+      setup_before('different_mod_path', options)
     end
     after do
-      assert_execute("vagrant", "destroy", "--force", log: false)
+      assert_execute("vagrant", "destroy", "--force")
     end
 
     it 'skips r10k deploy' do
@@ -102,12 +96,10 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
   describe 'Puppetfile syntax error' do
     # r10k runtime failure
     before do
-      environment.skeleton('puppetfile_syntax_error')
-      environment.env['VBOX_USER_HOME'] = environment.homedir.to_s
-      assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
+      setup_before('puppetfile_syntax_error', options)
     end
     after do
-      assert_execute("vagrant", "destroy", "--force", log: false)
+      assert_execute("vagrant", "destroy", "--force")
     end
 
     it 'fails during module deploy' do
@@ -120,6 +112,13 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
       ensure_puppet_didnt_run(up_result)
       expect(up_result.stderr).to include("Invalid syntax in Puppetfile at")
     end
+  end
+
+  # setup skeleton, add box
+  def setup_before(skel_name, options)
+    environment.skeleton(skel_name)
+    environment.env['VBOX_USER_HOME'] = environment.homedir.to_s
+    assert_execute('vagrant', 'box', 'add', "vagrantr10kspec", options[:box])
   end
 
   # checks for a successful up run with r10k deployment and puppet provisioning
