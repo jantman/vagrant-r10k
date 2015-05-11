@@ -17,6 +17,7 @@ test_names = {
 }
 
 xmltmp_re = re.compile(r"VBoxManage: error: Runtime error opening '[^']+' for reading: -102\(File not found\.\)")
+boxadd_re = re.compile(r"Couldn't open file /tmp/vagrant-r10k-spec/.+/vagrantr10kspec")
 
 test_results = defaultdict(list)
 
@@ -25,7 +26,12 @@ def find_error(output, num, name):
         return "xml.tmp_-102" # Runtime error opening '<tmp path>/home/.config/VirtualBox/VirtualBox.xml-tmp' for reading: -102(File not found.).
     elif 'VERR_DISK_FULL' in output:
         return 'VERR_DISK_FULL'
-    raise NotImplementedError("find_error() couldn't find error in output of run {n} test {t}:\n{o}\n".format(o=output, n=num, t=name))
+    elif boxadd_re.search(output):
+        return "boxadd-cantopen"
+    return 'unknown'
+    print("\n\n")
+    print(output)
+    raise NotImplementedError("find_error() couldn't find error in output of run {n} test {t}".format(n=num, t=name))
     return "unknown"
 
 def analyze_run(d):
