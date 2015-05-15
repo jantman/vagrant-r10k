@@ -1,3 +1,5 @@
+require "log4r"
+
 module VagrantPlugins
   module R10k
     class Config < Vagrant.plugin('2', :config)
@@ -9,9 +11,12 @@ module VagrantPlugins
         @puppet_dir = UNSET_VALUE
         @puppetfile_path = UNSET_VALUE
         @module_path = UNSET_VALUE
+        @logger = Log4r::Logger.new("vagrant::r10k::modulegetter")
+        @logger.debug("vagrant-r10k-config: initialize")
       end
 
       def validate(machine)
+        @logger.debug("vagrant-r10k-config: validate")
         errors = _detected_errors
 
         return {} if puppet_dir == UNSET_VALUE and puppetfile_path == UNSET_VALUE
@@ -36,7 +41,8 @@ module VagrantPlugins
           module_path_path = File.join(machine.env.root_path, module_path)
           errors << "module_path directory '#{module_path_path}' does not exist" if !File.directory?(module_path_path)
         end
-        
+
+        @logger.debug("vagrant-r10k-config: END validate")
         { "vagrant-r10k" => errors }
       end
 

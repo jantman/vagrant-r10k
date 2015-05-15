@@ -33,6 +33,11 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
       status("Test: vagrant up")
       up_result = assert_execute('vagrant', 'up', "--provider=#{provider}", '--debug')
       ensure_successful_run(up_result, environment.workdir)
+      puts "\n==== stdout ===="
+      puts up_result.stdout
+      puts "\n==== stderr ====\n"
+      puts up_result.stderr
+      puts "================\n"
 
       status("Test: reviewboard module")
       rb_dir = File.join(environment.workdir, 'puppet', 'modules', 'reviewboard')
