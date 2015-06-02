@@ -11,6 +11,7 @@ group :development do
   gem 'simplecov', :require => false
   gem 'codecov', :require => false
   gem "rspec_junit_formatter", :require => false
+  gem 'rspec-matcher-num-times', git: "https://github.com/jantman/rspec-matcher-num-times.git", branch: 'rspec2'
 end
 
 group :plugins do

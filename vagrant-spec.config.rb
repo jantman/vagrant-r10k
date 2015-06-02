@@ -1,6 +1,7 @@
 require 'pathname'
 require "vagrant-spec/acceptance"
 require 'rspec_junit_formatter'
+require 'rspec_matcher_num_times'
 
 Vagrant::Spec::Acceptance.configure do |c|
   acceptance_dir = Pathname.new File.expand_path("../spec/acceptance", __FILE__)

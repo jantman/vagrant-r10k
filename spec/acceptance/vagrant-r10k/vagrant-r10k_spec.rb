@@ -1,3 +1,4 @@
+include VagrantPlugins::R10k
 shared_examples 'provider/vagrant-r10k' do |provider, options|
   # NOTE: vagrant-spec's acceptance framework (specifically IsolatedEnvironment)
   # creates an isolated environment for each 'it' block and tears it down afterwards.
@@ -129,6 +130,10 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
   # checks for a successful up run with r10k deployment and puppet provisioning
   def ensure_successful_run(up_result, workdir)
     expect(up_result).to exit_with(0)
+    expect(up_result.stderr).to include('global:   - r10k = 1.2.1')
+    expect(up_result.stderr).to include("global:   - vagrant-r10k = #{VagrantPlugins::R10k::VERSION}")
+    expect(up_result.stderr).to include('Registered plugin: vagrant-r10k')
+    expect(up_result.stderr).to include('modulegetter: vagrant-r10k: called')
     expect(up_result.stdout).to include('vagrant-r10k: Building the r10k module path with puppet provisioner module_path "puppet/modules"')
     expect(up_result.stdout).to include("vagrant-r10k: Beginning r10k deploy of puppet modules into #{workdir}/puppet/modules using #{workdir}/puppet/Puppetfile")
     expect(up_result.stdout).to include('vagrant-r10k: Deploy finished')

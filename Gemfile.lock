@@ -10,6 +10,14 @@ GIT
       thor (~> 0.18.1)
 
 GIT
+  remote: https://github.com/jantman/rspec-matcher-num-times.git
+  revision: a34cf9b95ff94512d4c515056ef25a73dbf8d544
+  branch: rspec2
+  specs:
+    rspec-matcher-num-times (0.0.1)
+      rspec (>= 2.0)
+
+GIT
   remote: https://github.com/mitchellh/vagrant.git
   revision: 27599ee897da4a8145efb87e2a9294a1a0eacf8b
   branch: master
@@ -171,6 +179,7 @@ DEPENDENCIES
   bundler (~> 1.5)
   codecov
   rake
+  rspec-matcher-num-times!
   rspec_junit_formatter
   simplecov
   vagrant!
