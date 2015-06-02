@@ -34,12 +34,6 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
       status("Test: vagrant up")
       up_result = assert_execute('vagrant', 'up', "--provider=#{provider}", '--debug')
       ensure_successful_run(up_result, environment.workdir)
-      puts "\n==== stdout ===="
-      puts up_result.stdout
-      puts "\n==== stderr ====\n"
-      puts up_result.stderr
-      puts "================\n"
-
       status("Test: reviewboard module")
       rb_dir = File.join(environment.workdir, 'puppet', 'modules', 'reviewboard')
       expect(File.directory?(rb_dir)).to be_truthy
@@ -130,18 +124,23 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
   # checks for a successful up run with r10k deployment and puppet provisioning
   def ensure_successful_run(up_result, workdir)
     expect(up_result).to exit_with(0)
+    # version checks
     expect(up_result.stderr).to include('global:   - r10k = 1.2.1')
     expect(up_result.stderr).to include("global:   - vagrant-r10k = #{VagrantPlugins::R10k::VERSION}")
     expect(up_result.stderr).to include('Registered plugin: vagrant-r10k')
     expect(up_result.stderr).to include('modulegetter: vagrant-r10k: called')
-    expect(up_result.stderr).to match_num_times(1, /INFO interface: info: Notice: Compiled catalog for .+ in environment production in \d+\.\d+ seconds/)
-    expect(up_result.stderr).to include_num_times(1, 'INFO interface: info: Notice: vagrant-r10k puppet run')
+    # modulegetter run just before machine up
     expect(up_result.stderr).to match_num_times(1, %r"INFO runner: Running action: machine_action_up.*DEBUG subprocess: Exit status: 0\s+INFO warden: Calling IN action: #<VagrantPlugins::R10k::Modulegetter:0x[0-9a-f]+>\s+DEBUG modulegetter: vagrant-r10k: called"m)
+    expect(up_result.stdout).to match_num_times(1, %r"==> default: Setting the name of the VM: .*\s+==> default: vagrant-r10k: Building the r10k module path with puppet provisioner module_path \"puppet/modules\"")
+    # modulegetter run just before importing basebox
     expect(up_result.stderr).to match_num_times(1, %r"INFO runner: Running action: machine_action_up.*\s+INFO warden: Calling IN action.*\s+INFO warden: Calling IN action:.*\s+INFO handle_box: Machine already has box\. HandleBox will not run\.\s+INFO warden: Calling IN action:.*\s+INFO warden: Calling IN action:.*\s+DEBUG modulegetter: vagrant-r10k: called")
+    expect(up_result.stdout).to match_num_times(1, %r"Bringing machine 'default' up with 'virtualbox' provider\.\.\.\s+==> default: vagrant-r10k: Building the r10k module path with puppet provisioner module_path \"puppet/modules\"")
+    # provisioning runs
+    expect(up_result.stdout).to include_num_times(2, 'vagrant-r10k: Beginning r10k deploy of puppet modules')
+    # other checks
     expect(up_result.stdout).to include('vagrant-r10k: Building the r10k module path with puppet provisioner module_path "puppet/modules"')
     expect(up_result.stdout).to include("vagrant-r10k: Beginning r10k deploy of puppet modules into #{workdir}/puppet/modules using #{workdir}/puppet/Puppetfile")
     expect(up_result.stdout).to include('vagrant-r10k: Deploy finished')
-    expect(up_result.stderr).to match(/^$/)
     ensure_puppet_ran(up_result)
   end
 
