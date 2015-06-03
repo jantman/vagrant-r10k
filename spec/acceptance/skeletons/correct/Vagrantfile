@@ -1,6 +1,9 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+require 'vagrant-vmware-workstation'
+puts ENV
+
 Vagrant.configure("2") do |config|
   config.vm.box = "vagrantr10kspec"
   config.vm.network :private_network, ip: '10.10.10.29'

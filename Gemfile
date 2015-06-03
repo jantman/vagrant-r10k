@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+source "http://gems.hashicorp.com"
 
 group :development do
   if ENV.has_key?('VAGRANT_VERSION')
@@ -16,4 +17,5 @@ end
 
 group :plugins do
   gemspec
+  gem 'vagrant-vmware-workstation', '3.2.8'
 end
