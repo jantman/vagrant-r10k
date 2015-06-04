@@ -135,10 +135,10 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
     expect(up_result.stderr).to include('Registered plugin: vagrant-r10k')
     expect(up_result.stderr).to include('modulegetter: vagrant-r10k: called')
     # modulegetter run just before machine up
-    expect(up_result.stderr).to match_num_times(1, %r"INFO runner: Running action: machine_action_up.*DEBUG subprocess: Exit status: 0\s+INFO warden: Calling IN action: #<VagrantPlugins::R10k::Modulegetter:0x[0-9a-f]+>\s+DEBUG modulegetter: vagrant-r10k: called"m)
+    expect(up_result.stderr).to match_num_times(1, %r"INFO runner: Running action: machine_action_up.*(DEBUG subprocess: Exit status: 0|INFO warden: Calling IN action: VMware Middleware: Compatibility)\s+INFO warden: Calling IN action: #<VagrantPlugins::R10k::Modulegetter:0x[0-9a-f]+>\s+DEBUG modulegetter: vagrant-r10k: called"m)
     expect(up_result.stdout).to match_num_times(1, %r"==> default: Setting the name of the VM: .*\s+==> default: vagrant-r10k: Building the r10k module path with puppet provisioner module_path \"puppet/modules\"")
     # modulegetter run just before importing basebox
-    expect(up_result.stderr).to match_num_times(1, %r"INFO runner: Running action: machine_action_up.*\s+INFO warden: Calling IN action.*\s+INFO warden: Calling IN action:.*\s+INFO handle_box: Machine already has box\. HandleBox will not run\.\s+INFO warden: Calling IN action:.*\s+INFO warden: Calling IN action:.*\s+DEBUG modulegetter: vagrant-r10k: called")
+    expect(up_result.stderr).to match_num_times(1, %r"INFO runner: Running action: machine_action_up.*\s+INFO warden: Calling IN action.*\s+INFO warden: Calling IN action:.*\s+(INFO handle_box: Machine already has box\. HandleBox will not run\.\s+INFO warden: Calling IN action:.*\s+INFO warden: Calling IN action:.*\s+)?DEBUG modulegetter: vagrant-r10k: called")
     expect(up_result.stdout).to match_num_times(1, %r"Bringing machine 'default' up with 'virtualbox' provider\.\.\.\s+==> default: vagrant-r10k: Building the r10k module path with puppet provisioner module_path \"puppet/modules\"")
     # provisioning runs
     expect(up_result.stdout).to include_num_times(2, 'vagrant-r10k: Beginning r10k deploy of puppet modules')
