@@ -157,14 +157,15 @@ actually running EC2 instances. As such, acceptance tests are provided separatel
 for each provider.
 
 Note that the acceptance tests are tested with bundler 1.7.14. Also note that
-the first the the VMWare provider is run in a given installation, it will
+the first time the VMWare provider is run in a given installation, it will
 present an interactive sudo prompt in order to be able to interact with
 VMWare.
 
-Getting the acceptance tests working for the vagrant-vmware-workstation provider
-was not easy. Many thanks to http://www.codingonstilts.com/2013/07/how-to-bundle-exec-vagrant-up-with.html
+__Note__ that the vmware-workstation provider acceptance tests are not currently
+functional; I've only been able to get the VirtualBox acceptance tests working.
+If many users report vmware-specific problems, I'll give the tests another try.
+Helpful information for them is available at http://www.codingonstilts.com/2013/07/how-to-bundle-exec-vagrant-up-with.html
 and https://groups.google.com/d/topic/vagrant-up/J8J6LmhzBqM/discussion
-for the information required to get it working.
 
 ### Manually Testing Vagrant
 

@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-require 'vagrant-vmware-workstation'
+#require 'vagrant-vmware-workstation'
 puts ENV
 
 Vagrant.configure("2") do |config|
