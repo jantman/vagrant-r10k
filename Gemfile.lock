@@ -19,16 +19,16 @@ GIT
 
 GIT
   remote: https://github.com/mitchellh/vagrant.git
-  revision: 27599ee897da4a8145efb87e2a9294a1a0eacf8b
+  revision: cd25b820c4425c77b833550e1f1d90f9a7c8be14
   branch: master
   specs:
-    vagrant (1.7.2)
-      bundler (>= 1.5.2, < 1.8.0)
+    vagrant (1.7.4)
+      bundler (>= 1.5.2, <= 1.10.5)
       childprocess (~> 0.5.0)
       erubis (~> 2.7.0)
       hashicorp-checkpoint (~> 0.1.1)
       i18n (>= 0.6.0, <= 0.8.0)
-      listen (~> 2.8.0)
+      listen (~> 3.0.2)
       log4r (~> 1.1.9, < 1.1.11)
       net-scp (~> 1.1.0)
       net-sftp (~> 2.1)
@@ -38,7 +38,7 @@ GIT
       rest-client (>= 1.6.0, < 2.0)
       wdm (~> 0.1.0)
       winrm (~> 1.3)
-      winrm-fs (~> 0.1.0)
+      winrm-fs (~> 0.2.0)
 
 PATH
   remote: .
@@ -51,9 +51,7 @@ GEM
   remote: http://gems.hashicorp.com/
   specs:
     builder (3.2.2)
-    celluloid (0.16.0)
-      timers (~> 4.0.0)
-    childprocess (0.5.5)
+    childprocess (0.5.6)
       ffi (~> 1.0, >= 1.0.11)
     codecov (0.0.4)
       json
@@ -64,7 +62,7 @@ GEM
       colored (~> 1.2)
     diff-lcs (1.2.5)
     docile (1.1.5)
-    domain_name (0.5.23)
+    domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
     erubis (2.7.0)
     faraday (0.8.9)
@@ -74,21 +72,19 @@ GEM
     faraday_middleware-multi_json (0.0.6)
       faraday_middleware
       multi_json
-    ffi (1.9.6)
+    ffi (1.9.10)
     gssapi (1.2.0)
       ffi (>= 1.0.1)
     gyoku (1.3.1)
       builder (>= 2.1.2)
     hashicorp-checkpoint (0.1.4)
-    hitimes (1.2.2)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     httpclient (2.6.0.1)
     i18n (0.7.0)
     json (1.8.2)
     json_pure (1.8.1)
-    listen (2.8.6)
-      celluloid (>= 0.15.2)
+    listen (3.0.3)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
     little-plugger (1.1.3)
@@ -96,7 +92,7 @@ GEM
     logging (1.8.2)
       little-plugger (>= 1.1.3)
       multi_json (>= 1.8.4)
-    mime-types (2.4.3)
+    mime-types (2.6.1)
     mini_portile (0.6.0)
     multi_json (1.8.4)
     multipart-post (1.2.0)
@@ -108,7 +104,7 @@ GEM
     netrc (0.10.3)
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
-    nori (2.5.0)
+    nori (2.6.0)
     r10k (1.2.1)
       colored (>= 1.2)
       cri (~> 2.5.0)
@@ -120,10 +116,10 @@ GEM
       multi_json (~> 1.8.2)
       systemu (~> 2.5.2)
     rake (10.4.2)
-    rb-fsevent (0.9.4)
+    rb-fsevent (0.9.5)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
-    rb-kqueue (0.2.3)
+    rb-kqueue (0.2.4)
       ffi (>= 0.5.0)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
@@ -150,15 +146,13 @@ GEM
     simplecov-html (0.9.0)
     systemu (2.5.2)
     thor (0.18.1)
-    timers (4.0.1)
-      hitimes
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.6)
+    unf_ext (0.0.7.1)
     url (0.3.2)
     uuidtools (2.1.5)
-    wdm (0.1.0)
-    winrm (1.3.2)
+    wdm (0.1.1)
+    winrm (1.3.3)
       builder (>= 2.1.2)
       gssapi (~> 1.2)
       gyoku (~> 1.0)
@@ -167,7 +161,7 @@ GEM
       nori (~> 2.0)
       rubyntlm (~> 0.4.0)
       uuidtools (~> 2.1.2)
-    winrm-fs (0.1.0)
+    winrm-fs (0.2.2)
       erubis (~> 2.7)
       logging (~> 1.6, >= 1.6.1)
       rubyzip (~> 1.1)
