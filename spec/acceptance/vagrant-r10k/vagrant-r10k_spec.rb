@@ -142,6 +142,10 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
     expect(up_result.stdout).to match_num_times(1, %r"Bringing machine 'default' up with 'virtualbox' provider\.\.\.\s+==> default: vagrant-r10k: Building the r10k module path with puppet provisioner module_path \"puppet/modules\"")
     # provisioning runs
     expect(up_result.stdout).to include_num_times(2, 'vagrant-r10k: Beginning r10k deploy of puppet modules')
+    # modulegetter runs before provisioning
+    expect(up_result.stdout).to match_num_times(1, %r"==> default: vagrant-r10k: Deploy finished.*\s+==> default: Running provisioner: puppet"m)
+    # modulegetter BEFORE ConfigValidate
+    expect(up_result.stderr).to match(%r"(?!ConfigValidate)+default: vagrant-r10k: Deploy finished.*Vagrant::Action::Builtin::ConfigValidate"m)
     # other checks
     expect(up_result.stdout).to include('vagrant-r10k: Building the r10k module path with puppet provisioner module_path "puppet/modules"')
     expect(up_result.stdout).to include("vagrant-r10k: Beginning r10k deploy of puppet modules into #{workdir}/puppet/modules using #{workdir}/puppet/Puppetfile")
