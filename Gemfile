@@ -17,5 +17,5 @@ end
 
 group :plugins do
   gemspec
-  gem 'vagrant-vmware-workstation', '3.2.8'
+  #gem 'vagrant-vmware-workstation', '3.2.8'
 end

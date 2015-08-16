@@ -85,11 +85,6 @@ def vmware_workstation_prep()
   end
 end
 
-desc 'foo'
-task :foo do
-  vmware_workstation_prep()
-end
-
 desc "Display the list of available rake tasks"
 task :help do
   system("rake -T")
@@ -108,6 +103,8 @@ namespace :acceptance do
       provider = task.name.split(':')[1]
       puts "Running acceptance tests for #{provider}"
       if provider == 'vmware_workstation'
+        puts "ERROR: vmware_workstation acceptance tests are broken. Please see https://github.com/jantman/vagrant-r10k/issues/20"
+        exit!(1)
         vmware_workstation_prep()
       end
       box_path = get_box_path(provider)
