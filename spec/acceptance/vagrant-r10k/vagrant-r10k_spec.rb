@@ -33,11 +33,11 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
     it 'deploys Puppetfile modules' do
       status("Test: vagrant up")
       up_result = assert_execute('vagrant', 'up', "--provider=#{provider}", '--debug')
-      puts "################# STDOUT #####################"
-      puts up_result.stdout
-      puts "################# STDERR #####################"
-      puts up_result.stderr
-      puts "################# END #####################"
+      #puts "################# STDOUT #####################"
+      #puts up_result.stdout
+      #puts "################# STDERR #####################"
+      #puts up_result.stderr
+      #puts "################# END #####################"
       ensure_successful_run(up_result, environment.workdir)
       status("Test: reviewboard module")
       rb_dir = File.join(environment.workdir, 'puppet', 'modules', 'reviewboard')
@@ -52,6 +52,27 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
       nm_result = assert_execute('bash', 'gitcheck.sh', 'puppet/modules/nodemeister')
       expect(nm_result).to exit_with(0)
       expect(nm_result.stdout).to match(/tag: 0\.1\.0 @ 3a504b5f66ebe1853bda4ee065fce18118958d84 \(origin: https:\/\/github\.com\/jantman\/puppet-nodemeister\.git\)/)
+    end
+  end
+
+  describe 'destroy when configured correctly' do
+    before do
+      setup_before('correct', options)
+    end
+    after do
+      assert_execute("vagrant", "destroy", "--force")
+    end
+
+    it 'does not deploy modules' do
+      status("Test: vagrant up destroy")
+      assert_execute('vagrant', 'up', "--provider=#{provider}", '--debug')
+      destroy_result = assert_execute("vagrant", "destroy", "--force", '--debug')
+      expect(destroy_result.stdout).to_not include("vagrant-r10k: Beginning r10k deploy of puppet modules")
+      expect(destroy_result.stdout).to_not include('vagrant-r10k: Building the r10k module path')
+      expect(destroy_result.stdout).to_not include('vagrant-r10k: Deploy finished')
+      expect(destroy_result.stderr).to_not include("vagrant-r10k: Beginning r10k deploy of puppet modules")
+      expect(destroy_result.stderr).to_not include('vagrant-r10k: Building the r10k module path')
+      expect(destroy_result.stderr).to_not include('vagrant-r10k: Deploy finished')
     end
   end
 
