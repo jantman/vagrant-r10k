@@ -1,5 +1,6 @@
 require 'r10k/logging'
 require 'vagrant/errors'
+require "log4r"
 
 # this is an ugly monkeypatch, since we're running inside of Vagrant,
 # which has already defined logger but not with the debug1 and debug2 custom levels
@@ -30,9 +31,12 @@ module VagrantPlugins
       include R10K::Logging
       def initialize(app, env)
         @app = app
+        @logger = Log4r::Logger.new("vagrant::r10k::modulegetter")
+        #@logger.level = 0
       end
 
       def call(env)
+        @logger.debug("vagrant-r10k: called")
         require 'r10k/puppetfile'
         require 'r10k/task_runner'
         require 'r10k/task/puppetfile'
@@ -50,11 +54,13 @@ module VagrantPlugins
         end
 
         puppetfile_path = File.join(env_dir, @env[:machine].config.r10k.puppetfile_path)
+        @logger.debug("vagrant-r10k: puppetfile_path: #{puppetfile_path}")
 
         module_path = nil
         # override the default mechanism for building a module_path with the optional config argument
         if @env[:machine].config.r10k.module_path != unset
           module_path = @env[:machine].config.r10k.module_path
+          @logger.debug("vagrant-r10k: module_path: #{module_path}")
         end
 
         manifest_file = nil
@@ -103,10 +109,15 @@ module VagrantPlugins
         # do the actual module buildout
         runner = R10K::TaskRunner.new([])
         begin
+          @logger.debug("vagrant-r10k: instantiating R10K::Puppetfile")
           puppetfile = R10K::Puppetfile.new(File.join(env_dir, @env[:machine].config.r10k.puppet_dir), module_path, puppetfile_path)
+          @logger.debug("vagrant-r10k: creating Puppetfile::Sync task")
           task   = R10K::Task::Puppetfile::Sync.new(puppetfile)
+          @logger.debug("vagrant-r10k: appending task to runner queue")
           runner.append_task task
+          @logger.debug("vagrant-r10k: running sync task")
           runner.run
+          @logger.debug("vagrant-r10k: sync task complete")
         rescue SyntaxError => ex
           @env[:ui].error "Invalid syntax in Puppetfile at #{puppetfile_path}"
           raise ErrorWrapper.new(ex)

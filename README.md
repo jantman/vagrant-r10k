@@ -138,13 +138,42 @@ Bug reports should include the following information in order to be investigated
 
 ## Development
 
-### Testing
-
-Still need to write tests... but they'll be using bundler and rspec.
-
 __Note__ that developming vagrant plugins _requires_ ruby 2.0.0 or newer.
 A `.ruby-version` is provided to get [rvm](https://rvm.io/workflow/projects)
 to use 2.1.1.
+
+### Unit Tests
+
+These will be automatically run by TravisCI for any pull requests or commits
+to the repository. To run manually:
+
+    bundle install --path vendor
+    bundle exec rake spec
+
+### Acceptance Tests
+
+Unfortunately, "acceptance" testing Vagrant requires the various providers
+be functional; i.e. to test the [VMWare Providers](https://www.vagrantup.com/vmware)
+requires both a license for them from Hashicorp, and the VMWare products
+themselves. Similarly, testing the AWS providers requires an AWS account and
+actually running EC2 instances. As such, acceptance tests are provided separately
+for each provider.
+
+Note that the acceptance tests are tested with bundler 1.7.14. Also note that
+the first time the VMWare provider is run in a given installation, it will
+present an interactive sudo prompt in order to be able to interact with
+VMWare.
+
+__Note__ that the vmware-workstation provider acceptance tests are not currently
+functional; I've only been able to get the VirtualBox acceptance tests working.
+If many users report vmware-specific problems, I'll give the tests another try.
+Helpful information for them is available at http://www.codingonstilts.com/2013/07/how-to-bundle-exec-vagrant-up-with.html
+and https://groups.google.com/d/topic/vagrant-up/J8J6LmhzBqM/discussion
+I had these working at some point, but have been unable to get them working since;
+it seems that (a bit painfully and ironically), mitchellh's [vagrant-spec](https://github.com/mitchellh/vagrant-spec/)
+doesn't seem to work cleanly with Hashicorp's paid/licensed Vagrant providers.
+
+### Manually Testing Vagrant
 
 For manual testing:
 
@@ -154,6 +183,8 @@ For manual testing:
 To use an existing project's Vagrantfile, you can just specify the directory that the Vagrantfile
 is in using the ``VAGRANT_CWD`` environment variable (i.e. prepend ``VAGRANT_CWD=/path/to/project``
 to the above command).
+
+Note that this will not work easily with the VMWare provider, or any other Hashicorp paid/licensed provider.
 
 ### Debugging
 

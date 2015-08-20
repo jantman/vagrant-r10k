@@ -20,7 +20,7 @@ tmp
 *.a
 mkmf.log
 vendor
-Vagrantfile
 .vagrant
 coverage
 results.xml
+spec/boxes

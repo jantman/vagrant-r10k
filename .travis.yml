@@ -1,8 +1,9 @@
 ---
+sudo: false
 language: ruby
 before_install:
   - gem install bundler --version $BUNDLER_VERSION
-install: bundle _${BUNDLER_VERSION}_ install
+install: bundle _${BUNDLER_VERSION}_ install --retry 5
 script: bundle _${BUNDLER_VERSION}_ exec rspec --color --format documentation
 notifications:
   email: true

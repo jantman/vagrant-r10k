@@ -11,6 +11,7 @@ $LOAD_PATH.unshift File.expand_path('../lib', __FILE__)
 ENV['VAGRANT_NO_PLUGINS'] = '1'
 
 require 'vagrant-spec/unit'
+require 'rspec_matcher_num_times'
 
 require 'codecov'
 if ENV['CI']=='true'
