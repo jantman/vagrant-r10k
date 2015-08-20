@@ -144,6 +144,9 @@ to use 2.1.1.
 
 ### Unit Tests
 
+These will be automatically run by TravisCI for any pull requests or commits
+to the repository. To run manually:
+
     bundle install --path vendor
     bundle exec rake spec
 
@@ -166,6 +169,9 @@ functional; I've only been able to get the VirtualBox acceptance tests working.
 If many users report vmware-specific problems, I'll give the tests another try.
 Helpful information for them is available at http://www.codingonstilts.com/2013/07/how-to-bundle-exec-vagrant-up-with.html
 and https://groups.google.com/d/topic/vagrant-up/J8J6LmhzBqM/discussion
+I had these working at some point, but have been unable to get them working since;
+it seems that (a bit painfully and ironically), mitchellh's [vagrant-spec](https://github.com/mitchellh/vagrant-spec/)
+doesn't seem to work cleanly with Hashicorp's paid/licensed Vagrant providers.
 
 ### Manually Testing Vagrant
 
@@ -178,7 +184,7 @@ To use an existing project's Vagrantfile, you can just specify the directory tha
 is in using the ``VAGRANT_CWD`` environment variable (i.e. prepend ``VAGRANT_CWD=/path/to/project``
 to the above command).
 
-Note that this will not work easily with the VMWare provider.
+Note that this will not work easily with the VMWare provider, or any other Hashicorp paid/licensed provider.
 
 ### Debugging
 
