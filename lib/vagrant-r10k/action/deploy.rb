@@ -9,12 +9,12 @@ module VagrantPlugins
           @logger.debug "vagrant::r10k::deploy called"
 
           if !r10k_enabled?(env)
-            @logger.info "r10k not configured; skipping vagrant-r10k"
+            env[:ui].info "r10k not configured; skipping vagrant-r10k"
             return @app.call(env)
           end
 
           if !provision_enabled?(env)
-            @logger.info "provisioning disabled; skipping vagrant-r10k"
+            env[:ui].info "provisioning disabled; skipping vagrant-r10k"
             return @app.call(env)
           end
 
@@ -76,25 +76,6 @@ module VagrantPlugins
           @env[:ui].info "vagrant-r10k: Deploy finished"
           @app.call(env)
         end
-      end
-
-      class ErrorWrapper < ::Vagrant::Errors::VagrantError
-        attr_reader :original
-
-        def initialize(original)
-          @original = original
-        end
-
-        def to_s
-          "#{original.class}: #{original.to_s}"
-        end
-
-        private
-
-        def method_missing(fun, *args, &block)
-          original.send(fun, *args, &block)
-        end
-
       end
     end
   end

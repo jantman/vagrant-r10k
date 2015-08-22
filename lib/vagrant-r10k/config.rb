@@ -11,7 +11,7 @@ module VagrantPlugins
         @puppet_dir = UNSET_VALUE
         @puppetfile_path = UNSET_VALUE
         @module_path = UNSET_VALUE
-        @logger = Log4r::Logger.new("vagrant::r10k::modulegetter")
+        @logger = Log4r::Logger.new("vagrant::r10k::config")
         @logger.debug("vagrant-r10k-config: initialize")
       end
 

@@ -98,6 +98,7 @@ module VagrantPlugins
         prov = puppet_provisioner(env)
         return nil if prov.nil?
         ret[:module_path] = module_path(env, prov, ret[:env_dir_path])
+        return nil if ret[:module_path].nil?
         ret[:manifest_file] = File.join(ret[:env_dir_path], prov.config.manifest_file)
         ret[:manifests] = File.join(ret[:env_dir_path], prov.config.manifests_path[1])
         ret[:puppet_dir] = File.join(ret[:env_dir_path], env[:machine].config.r10k.puppet_dir)
@@ -116,11 +117,9 @@ module VagrantPlugins
         if env[:machine].config.r10k.module_path != unset
           module_path = env[:machine].config.r10k.module_path
           if prov.config.module_path.is_a?(Array) and ! prov.config.module_path.include?(module_path)
-            env[:ui].detail "vagrant-r10k: module_path \"#{module_path}\" is not within the ones defined in puppet provisioner; not running"
-            return nil
+            raise ErrorWrapper.new(RuntimeError.new("vagrant-r10k: module_path \"#{module_path}\" is not within the ones defined in puppet provisioner; please correct this condition"))
           elsif ! prov.config.module_path.is_a?(Array) and prov.config.module_path != module_path
-            env[:ui].detail "vagrant-r10k: module_path \"#{module_path}\" is not the same as in puppet provisioner; not running"
-            return nil
+            raise ErrorWrapper.new(RuntimeError.new("vagrant-r10k: module_path \"#{module_path}\" is not the same as in puppet provisioner; please correct this condition"))
           end
         # no modulepath explict set in config, build one from the provisioner config
         else
@@ -143,7 +142,27 @@ module VagrantPlugins
         require 'r10k/puppetfile'
         R10K::Puppetfile.new(config[:puppet_dir], config[:module_path], config[:puppetfile_path])
       end
-      
+
+      # wrapper to create VagrantErrors
+      class ErrorWrapper < ::Vagrant::Errors::VagrantError
+        attr_reader :original
+
+        def initialize(original)
+          @original = original
+        end
+
+        def to_s
+          "#{original.class}: #{original.to_s}"
+        end
+
+        private
+
+        def method_missing(fun, *args, &block)
+          original.send(fun, *args, &block)
+        end
+
+      end
+
     end
   end
 end
