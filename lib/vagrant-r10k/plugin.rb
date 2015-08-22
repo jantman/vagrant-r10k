@@ -11,7 +11,9 @@ end
 # :nocov:
 
 require_relative "version"
-require_relative "modulegetter"
+require_relative "action/base"
+require_relative "action/validate"
+require_relative "action/deploy"
 
 module VagrantPlugins
   module R10k
@@ -19,9 +21,11 @@ module VagrantPlugins
       name "vagrant-r10k"
       description "Retrieve puppet modules based on a Puppetfile"
 
-      action_hook "vagrant-r10k" do |hook|
-        hook.before Vagrant::Action::Builtin::Provision, Modulegetter
-        hook.before Vagrant::Action::Builtin::ConfigValidate, Modulegetter
+      [:machine_action_up, :machine_action_reload, :machine_action_provision].each do |action|
+        action_hook('vagrant-r10k', action) do |hook|
+          hook.after(Vagrant::Action::Builtin::ConfigValidate, Action::Base.validate)
+          hook.before(Vagrant::Action::Builtin::Provision, Action::Base.deploy)
+        end
       end
 
       config "r10k" do
