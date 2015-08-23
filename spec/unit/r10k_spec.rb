@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-require 'vagrant-r10k/modulegetter'
+require 'vagrant-r10k/helpers'
 
 describe R10K::TaskRunner do
-  subject { described_class.new({}) }
+  subject { described_class.new }
   describe '#get_errors' do
     it 'returns @errors' do
       subject.instance_variable_set(:@errors, ['foo'])

@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'vagrant-r10k/modulegetter'
+require 'vagrant-r10k/helpers'
 
 describe Log4r::Logger do
   subject { described_class.new('testlogger') }
