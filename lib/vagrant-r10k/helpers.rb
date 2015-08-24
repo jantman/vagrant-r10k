@@ -92,7 +92,7 @@ module VagrantPlugins
       #
       # @return [Hash]
       def r10k_config(env)
-        ret = {:manifests => nil, :module => nil, :manifest_file => nil}
+        ret = {:manifests => nil, :module_path => nil, :manifest_file => nil}
         ret[:env_dir_path] = env_dir(env)
         ret[:puppetfile_path] = puppetfile_path(env)
         prov = puppet_provisioner(env)
@@ -124,6 +124,7 @@ module VagrantPlugins
         # no modulepath explict set in config, build one from the provisioner config
         else
           module_path = prov.config.module_path.is_a?(Array) ? prov.config.module_path[0] : prov.config.module_path
+          # TODO - raise here instead of returning nil later
           env[:ui].info "vagrant-r10k: Building the r10k module path with puppet provisioner module_path \"#{module_path}\". (if module_path is an array, first element is used)"
         end
 

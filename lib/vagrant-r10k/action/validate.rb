@@ -32,15 +32,6 @@ module VagrantPlugins
             puppetfile.load
           rescue Exception => ex
             @logger.error "ERROR: Puppetfile bad syntax"
-            ex.backtrace.each do |line|
-              @logger.error line
-            end
-            @logger.error ex.inspect
-            @logger.error "MESSAGE:"
-            @logger.error ex.message
-            @logger.error "END MESSAGE"
-            
-            puts ex.inspect
             raise ErrorWrapper.new(RuntimeError.new(ex))
           end
 
