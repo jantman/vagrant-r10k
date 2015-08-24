@@ -9,7 +9,7 @@ module VagrantPlugins
           @logger.debug "vagrant::r10k::deploy called"
 
           if !r10k_enabled?(env)
-            env[:ui].info "r10k not configured; skipping vagrant-r10k"
+            env[:ui].info "vagrant-r10k not configured; skipping"
             return @app.call(env)
           end
 

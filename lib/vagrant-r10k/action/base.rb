@@ -36,6 +36,10 @@ module VagrantPlugins
           end
         end
 
+        def get_logger
+          @logger
+        end
+
       end
     end
   end

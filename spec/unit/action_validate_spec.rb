@@ -41,7 +41,9 @@ EOF
     end
 
     describe 'provisioning not enabled' do
-      before { allow_any_instance_of(VagrantPlugins::R10k::Helpers).to receive(:provision_enabled?).and_return(false) }
+      before do
+        allow_any_instance_of(VagrantPlugins::R10k::Helpers).to receive(:provision_enabled?).and_return(false)
+      end
       include_context 'unit' do
         let(:vagrantfile) { <<-EOF
 Vagrant.configure('2') do |config|
