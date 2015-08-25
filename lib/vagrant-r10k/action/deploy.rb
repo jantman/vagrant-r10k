@@ -37,7 +37,7 @@ module VagrantPlugins
         end
 
         def deploy(env, config)
-          @logger.debug("vagrant-r10k: called")
+          @logger.debug("vagrant::r10k::deploy.deploy called")
           require 'r10k/task_runner'
           require 'r10k/task/puppetfile'
 
@@ -65,7 +65,7 @@ module VagrantPlugins
             runner.run
             @logger.debug("vagrant-r10k: sync task complete")
           rescue SyntaxError => ex
-            @env[:ui].error "Invalid syntax in Puppetfile at #{puppetfile_path}"
+            @env[:ui].error "Invalid syntax in Puppetfile at #{config[:puppetfile_path]}"
             raise ErrorWrapper.new(ex)
           end
           if !runner.succeeded?

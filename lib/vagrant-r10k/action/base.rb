@@ -35,11 +35,6 @@ module VagrantPlugins
             R10K::Logging.level = 3
           end
         end
-
-        def get_logger
-          @logger
-        end
-
       end
     end
   end

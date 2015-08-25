@@ -6,7 +6,7 @@ module VagrantPlugins
       class Validate < Base
 
         def call(env)
-          @logger.debug "vagrant::r10k::validate: called"
+          @logger.debug "vagrant::r10k::validate called"
 
           if !r10k_enabled?(env)
             env[:ui].info "vagrant-r10k not configured; skipping"
