@@ -24,3 +24,4 @@ vendor
 coverage
 results.xml
 spec/boxes
+acceptance.out

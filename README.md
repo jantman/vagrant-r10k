@@ -164,6 +164,23 @@ the first time the VMWare provider is run in a given installation, it will
 present an interactive sudo prompt in order to be able to interact with
 VMWare.
 
+Running Virtualbox acceptance tests:
+
+    bundle exec rake acceptance:virtualbox
+
+When tests fail, they leave Virtualbox ``hostonlyif``s around; this can quickly clutter up the
+system and cause other problems. As a result, after the virtualbox tests, we invoke the Vagrant
+VirtualBox Provider's [delete_unused_host_only_networks](https://github.com/mitchellh/vagrant/blob/b118ab10c8e0f8e62a547249805f05240e6e4ee9/plugins/providers/virtualbox/driver/version_5_0.rb#L69)
+method. This can also be manually run via ``bundle exec rake clean_vbox``.
+
+These tests may generate a _lot_ of output; since there's no nice standalone junit XML viewer,
+it may be helpful to run the tests as:
+
+    bundle exec rake acceptance:virtualbox 2>&1 | tee acceptance.out
+
+And then examine ``acceptance.out`` as needed.
+
+
 __Note__ that the vmware-workstation provider acceptance tests are not currently
 functional; I've only been able to get the VirtualBox acceptance tests working.
 If many users report vmware-specific problems, I'll give the tests another try.
@@ -172,6 +189,10 @@ and https://groups.google.com/d/topic/vagrant-up/J8J6LmhzBqM/discussion
 I had these working at some point, but have been unable to get them working since;
 it seems that (a bit painfully and ironically), mitchellh's [vagrant-spec](https://github.com/mitchellh/vagrant-spec/)
 doesn't seem to work cleanly with Hashicorp's paid/licensed Vagrant providers.
+
+Running (currently broken) VMWare Workstation acceptance tests:
+
+    bundle exec rake acceptance:vmware_workstation
 
 ### Manually Testing Vagrant
 

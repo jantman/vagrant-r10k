@@ -90,6 +90,15 @@ task :help do
   system("rake -T")
 end
 
+desc "Cleanup VirtualBox hostonlyifs"
+task :clean_vbox do
+  puts "Initializing Vagrant ProviderVirtualBox plugin"
+  require 'vagrant'
+  dm = VagrantPlugins::ProviderVirtualBox::Driver::Meta.new
+  puts "Deleting unused VirtualBox host-only networks"
+  dm.delete_unused_host_only_networks
+end
+
 namespace :acceptance do
   providers = ['virtualbox', 'vmware_workstation']
 
@@ -111,6 +120,9 @@ namespace :acceptance do
       system_or_die("VS_PROVIDER=#{provider} VS_BOX_PATH=#{box_path} TMPDIR=#{tmp_dir_path} bundle exec vagrant-spec test")
       system("rm -Rf #{tmp_dir_path}/*")
       fix_results_xml()
+      if provider == 'virtualbox'
+        Rake::Task['clean_vbox'].invoke
+      end
     end
   end
 end

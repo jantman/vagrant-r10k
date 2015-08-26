@@ -2,6 +2,7 @@ require 'spec_helper'
 require_relative 'sharedcontext'
 require_relative 'shared_expectations'
 require 'vagrant-r10k/plugin'
+require 'vagrant-r10k/action/base'
 
 include SharedExpectations
 
@@ -12,11 +13,14 @@ describe VagrantPlugins::R10k::Plugin do
     it 'should set hooks' do
       # I had lots of problems with this, but found an example at:
       # https://github.com/petems/vagrant-puppet-install/blob/60b26f8d4f4d82b687bc527b239cba2baaf95731/test/unit/vagrant-puppet-install/plugin_spec.rb
-      hook_proc = described_class.components.action_hooks[:__all_actions__][0]
-      hook = double
-      expect(hook).to receive(:before).with(Vagrant::Action::Builtin::Provision, VagrantPlugins::R10k::Modulegetter)
-      expect(hook).to receive(:before).with(Vagrant::Action::Builtin::ConfigValidate, VagrantPlugins::R10k::Modulegetter)
-      hook_proc.call(hook)
+      [:machine_action_up, :machine_action_reload, :machine_action_provision].each do |action|
+        hook_proc = described_class.components.action_hooks[action][0]
+        hook = double
+        VagrantPlugins::R10k::Action::Base.stub(:validate => 'foo', :deploy => 'bar')
+        expect(hook).to receive(:after).with(Vagrant::Action::Builtin::ConfigValidate, 'foo')
+        expect(hook).to receive(:before).with(Vagrant::Action::Builtin::Provision, 'bar')
+        hook_proc.call(hook)
+      end
     end
   end
   context 'config' do
