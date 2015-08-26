@@ -139,7 +139,6 @@ EOF
       end
     end
     describe 'config properly set' do
-      # TODO this is a *GOOD* example of testing a method...
       let(:config) {{
                       :env_dir_path => 'env/dir/path',
                       :puppetfile_path => 'puppetfile/path',
@@ -226,6 +225,7 @@ EOF
       let(:puppetfile_dbl) { double }
       before do
         allow_any_instance_of(VagrantPlugins::R10k::Helpers).to receive(:get_puppetfile).and_return(puppetfile_dbl)
+        allow_any_instance_of(R10K::Logging).to receive(:level=)
       end
       it 'runs' do
         # stubs and doubles
@@ -239,8 +239,7 @@ EOF
           R10K::TaskRunner.stub(:new) { runner_dbl }
           R10K::Task::Puppetfile::Sync.stub(:new) { sync_dbl }
           # expectations
-          # TODO: why does this next line not work?
-          #expect(R10K::Logging.level).to eq(3)
+          expect(R10K::Logging).to receive(:level=).with(3).twice
           expect(ui).to receive(:info).with("vagrant-r10k: Beginning r10k deploy of puppet modules into module/path using puppetfile/path")
           logger = subject.instance_variable_get(:@logger)
           expect(logger).to receive(:debug).once.ordered.with("vagrant::r10k::deploy.deploy called")
@@ -281,6 +280,7 @@ EOF
       let(:puppetfile_dbl) { double }
       before do
         allow_any_instance_of(VagrantPlugins::R10k::Helpers).to receive(:get_puppetfile).and_return(puppetfile_dbl)
+        allow_any_instance_of(R10K::Logging).to receive(:level=)
       end
       it 'runs with r10k logging level to 0' do
         # stubs and doubles
@@ -294,8 +294,7 @@ EOF
           R10K::TaskRunner.stub(:new) { runner_dbl }
           R10K::Task::Puppetfile::Sync.stub(:new) { sync_dbl }
           # expectations
-          # TODO: why is this next line broken?
-          #expect(R10K::Logging.level).to eq(0)
+          expect(R10K::Logging).to receive(:level=).with(0).twice
           expect(ui).to receive(:info).with("vagrant-r10k: Beginning r10k deploy of puppet modules into module/path using puppetfile/path")
           logger = subject.instance_variable_get(:@logger)
           expect(logger).to receive(:debug).once.ordered.with("vagrant::r10k::deploy.deploy called")
@@ -390,6 +389,7 @@ EOF
       let(:puppetfile_dbl) { double }
       before do
         allow_any_instance_of(VagrantPlugins::R10k::Helpers).to receive(:get_puppetfile).and_return(puppetfile_dbl)
+        allow_any_instance_of(R10K::Logging).to receive(:level=)
       end
       it 'raises an error' do
         # stubs and doubles
@@ -408,8 +408,7 @@ EOF
           R10K::TaskRunner.stub(:new) { runner_dbl }
           R10K::Task::Puppetfile::Sync.stub(:new) { sync_dbl }
           # expectations
-          # TODO: why does this next line not work?
-          #expect(R10K::Logging.level).to eq(3)
+          expect(R10K::Logging).to receive(:level=).with(3).twice
           expect(ui).to receive(:info).with("vagrant-r10k: Beginning r10k deploy of puppet modules into module/path using puppetfile/path")
           logger = subject.instance_variable_get(:@logger)
           expect(logger).to receive(:debug).once.ordered.with("vagrant::r10k::deploy.deploy called")
@@ -451,6 +450,7 @@ EOF
       let(:puppetfile_dbl) { double }
       before do
         allow_any_instance_of(VagrantPlugins::R10k::Helpers).to receive(:get_puppetfile).and_return(puppetfile_dbl)
+        allow_any_instance_of(R10K::Logging).to receive(:level=)
       end
       it 'raises an error' do
         # stubs and doubles
@@ -465,8 +465,7 @@ EOF
           R10K::TaskRunner.stub(:new) { runner_dbl }
           R10K::Task::Puppetfile::Sync.stub(:new) { sync_dbl }
           # expectations
-          # TODO: why does this next line not work?
-          #expect(R10K::Logging.level).to eq(3)
+          expect(R10K::Logging).to receive(:level=).with(3).twice
           expect(ui).to receive(:info).with("vagrant-r10k: Beginning r10k deploy of puppet modules into module/path using puppetfile/path")
           logger = subject.instance_variable_get(:@logger)
           expect(logger).to receive(:debug).once.ordered.with("vagrant::r10k::deploy.deploy called")
