@@ -140,7 +140,7 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
       status("Test: vagrant up")
       up_result = execute('vagrant', 'up', "--provider=#{provider}")
       expect(up_result).to exit_with(0)
-      expect(up_result.stdout).to include("r10k not configured; skipping vagrant-r10k")
+      expect(up_result.stdout).to include("vagrant-r10k not configured; skipping")
       ensure_r10k_didnt_run(up_result, environment.workdir)
       ensure_puppet_ran(up_result)
     end
@@ -179,9 +179,9 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
     expect(up_result.stderr).to include('global:   - r10k = 1.2.1')
     expect(up_result.stderr).to include("global:   - vagrant-r10k = #{VagrantPlugins::R10k::VERSION}")
     expect(up_result.stderr).to include('Registered plugin: vagrant-r10k')
-    expect(up_result.stderr).to include('vagrant::r10k::validate: called')
+    expect(up_result.stderr).to include('vagrant::r10k::validate called')
     expect(up_result.stderr).to include('vagrant::r10k::deploy called')
-    expect(up_result.stderr).to match_num_times(1, %r"DEBUG config: vagrant-r10k-config: validate.*DEBUG validate: vagrant::r10k::validate: called.*Running action: provisioner_run"m), "config and validate run before provisioner"
+    expect(up_result.stderr).to match_num_times(1, %r"DEBUG config: vagrant-r10k-config: validate.*DEBUG validate: vagrant::r10k::validate called.*Running action: provisioner_run"m), "config and validate run before provisioner"
     expect(up_result.stderr).to match_num_times(1, %r"DEBUG deploy: vagrant::r10k::deploy called.*Running action: provisioner_run"m), "deploy runs before provisioners"
     # provisioning runs
     expect(up_result.stdout).to include_num_times(1, '==> default: vagrant-r10k: Beginning r10k deploy of puppet modules into'), "provisioning runs once"
