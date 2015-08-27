@@ -3,17 +3,19 @@ require_relative 'base'
 module VagrantPlugins
   module R10k
     module Action
+      # run r10k deploy
       class Deploy < Base
 
+        # determine if we should run, and get config
         def call(env)
           @logger.debug "vagrant::r10k::deploy called"
 
-          if !r10k_enabled?(env)
+          unless r10k_enabled?(env)
             env[:ui].info "vagrant-r10k not configured; skipping"
             return @app.call(env)
           end
 
-          if !provision_enabled?(env)
+          unless provision_enabled?(env)
             env[:ui].info "provisioning disabled; skipping vagrant-r10k"
             return @app.call(env)
           end
@@ -36,6 +38,7 @@ module VagrantPlugins
           @app.call(env)
         end
 
+        # run the actual r10k deploy
         def deploy(env, config)
           @logger.debug("vagrant::r10k::deploy.deploy called")
           require 'r10k/task_runner'
@@ -49,7 +52,7 @@ module VagrantPlugins
             R10K::Logging.level = 3
           end
 
-          if !File.file?(config[:puppetfile_path])
+          unless File.file?(config[:puppetfile_path])
             raise ErrorWrapper.new(RuntimeError.new("Puppetfile at #{config[:puppetfile_path]} does not exist."))
           end
 
@@ -68,7 +71,7 @@ module VagrantPlugins
             @env[:ui].error "Invalid syntax in Puppetfile at #{config[:puppetfile_path]}"
             raise ErrorWrapper.new(ex)
           end
-          if !runner.succeeded?
+          unless runner.succeeded?
             runner.get_errors().each do |error|
               raise ErrorWrapper.new(RuntimeError.new(error[1]))
             end
