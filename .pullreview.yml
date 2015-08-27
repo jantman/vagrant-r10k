@@ -2,5 +2,3 @@
 notifications:
   pullrequest:
     comment: verbose
-excludes:
-  - spec/*
