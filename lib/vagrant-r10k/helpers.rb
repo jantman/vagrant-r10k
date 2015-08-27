@@ -30,7 +30,6 @@ end
 
 module VagrantPlugins
   module R10k
-    
     # General-use vagrant-r10k helper methosd
     module Helpers
 
