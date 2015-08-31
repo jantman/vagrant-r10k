@@ -4,11 +4,14 @@ require 'log4r'
 # this is an ugly monkeypatch, since we're running inside of Vagrant,
 # which has already defined logger but not with the debug1 and debug2 custom levels
 module Log4r
+  # this is an ugly monkeypatch, since we're running inside of Vagrant,
+  # which has already defined logger but not with the debug1 and debug2 custom levels
   class Logger
 
     def debug1(msg)
       self.debug(msg)
     end
+
     def debug2(msg)
       self.debug(msg)
     end
@@ -17,6 +20,7 @@ end
 
 # patch this so we can get programmatic access to the errors
 module R10K
+  # patch this so we can get programmatic access to the errors
   class TaskRunner
     def get_errors
       @errors
@@ -26,6 +30,7 @@ end
 
 module VagrantPlugins
   module R10k
+    # General-use vagrant-r10k helper methosd
     module Helpers
 
       # Determine if r10k.puppet_dir and r10k.puppetfile_path are in config
@@ -92,7 +97,7 @@ module VagrantPlugins
       #
       # @return [Hash]
       def r10k_config(env)
-        ret = {:manifests => nil, :module_path => nil, :manifest_file => nil}
+        ret = { :manifests => nil, :module_path => nil, :manifest_file => nil }
         ret[:env_dir_path] = env_dir(env)
         ret[:puppetfile_path] = puppetfile_path(env)
         prov = puppet_provisioner(env)

@@ -4,16 +4,19 @@ require_relative '../helpers'
 module VagrantPlugins
   module R10k
     module Action
+      # base class for vagrant-r10k hook actions
       class Base
 
         include R10K::Logging
 
+        # validate hook
         def self.validate
           Vagrant::Action::Builder.new.tap do |b|
             b.use Action::Validate
           end
         end
 
+        # r10k deploy hook
         def self.deploy
           Vagrant::Action::Builder.new.tap do |b|
             b.use Action::Validate

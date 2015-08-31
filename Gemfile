@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
-source "http://gems.hashicorp.com"
+# this next line is needed for vagrant-vmware-workstation for acceptance testing
+#source "http://gems.hashicorp.com"
 
 group :development do
   if ENV.has_key?('VAGRANT_VERSION')

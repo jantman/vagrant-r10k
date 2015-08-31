@@ -3,17 +3,19 @@ require_relative 'base'
 module VagrantPlugins
   module R10k
     module Action
+      # action to validate config pre-deploy
       class Validate < Base
 
+        # validate configuration pre-deploy
         def call(env)
           @logger.debug "vagrant::r10k::validate called"
 
-          if !r10k_enabled?(env)
+          unless r10k_enabled?(env)
             env[:ui].info "vagrant-r10k not configured; skipping"
             return @app.call(env)
           end
 
-          if !provision_enabled?(env)
+          unless provision_enabled?(env)
             env[:ui].info "provisioning disabled; skipping vagrant-r10k"
             return @app.call(env)
           end
@@ -31,8 +33,8 @@ module VagrantPlugins
           begin
             puppetfile.load
           rescue Exception => ex
-            @logger.error "ERROR: Puppetfile bad syntax"
-            raise ErrorWrapper.new(RuntimeError.new(ex))
+            @env[:ui].error "Invalid syntax in Puppetfile at #{config[:puppetfile_path]}"
+            raise ErrorWrapper.new(ex)
           end
 
           @app.call(env)

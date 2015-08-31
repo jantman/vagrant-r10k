@@ -159,7 +159,7 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
       status("Test: vagrant up")
       up_result = execute('vagrant', 'up', "--provider=#{provider}")
       expect(up_result).to exit_with(1)
-      expect(up_result.stderr).to match(%r"RuntimeError: .*puppet/Puppetfile:1: syntax error, unexpected tIDENTIFIER, expecting '\('\s+this is not a valid puppetfile\s+\^")
+      expect(up_result.stderr).to match(%r"SyntaxError: .*puppet/Puppetfile:1: syntax error, unexpected tIDENTIFIER, expecting '\('\s+this is not a valid puppetfile\s+\^")
       ensure_r10k_didnt_run(up_result, environment.workdir)
       ensure_puppet_didnt_run(up_result)
     end
