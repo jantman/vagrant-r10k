@@ -48,7 +48,6 @@ PATH
 
 GEM
   remote: https://rubygems.org/
-  remote: http://gems.hashicorp.com/
   specs:
     builder (3.2.2)
     childprocess (0.5.6)
