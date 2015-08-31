@@ -67,7 +67,7 @@ module VagrantPlugins
             @logger.debug("vagrant-r10k: running sync task")
             runner.run
             @logger.debug("vagrant-r10k: sync task complete")
-          rescue SyntaxError => ex
+          rescue Exception => ex
             @env[:ui].error "Invalid syntax in Puppetfile at #{config[:puppetfile_path]}"
             raise ErrorWrapper.new(ex)
           end

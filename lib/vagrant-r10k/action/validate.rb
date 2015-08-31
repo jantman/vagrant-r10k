@@ -32,9 +32,9 @@ module VagrantPlugins
           @logger.debug "vagrant::r10k::validate: validating Puppetfile at #{config[:puppetfile_path]}"
           begin
             puppetfile.load
-          rescue StandardError => ex
-            @logger.error "ERROR: Puppetfile bad syntax"
-            raise ErrorWrapper.new(RuntimeError.new(ex))
+          rescue Exception => ex
+            @env[:ui].error "Invalid syntax in Puppetfile at #{config[:puppetfile_path]}"
+            raise ErrorWrapper.new(ex)
           end
 
           @app.call(env)
