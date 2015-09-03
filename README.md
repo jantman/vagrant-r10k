@@ -138,7 +138,7 @@ Bug reports should include the following information in order to be investigated
 
 ## Development
 
-__Note__ that developming vagrant plugins _requires_ ruby 2.0.0 or newer.
+__Note__ that developing vagrant plugins _requires_ ruby 2.0.0 or newer.
 A `.ruby-version` is provided to get [rvm](https://rvm.io/workflow/projects)
 to use 2.1.1.
 
