@@ -2,10 +2,17 @@
 
 ## master (unreleased)
 
-* Use relative requires in ``plugin.rb``
+## 0.3.0 2015-09-04 Jason Antman <jason@jasonantman.com>
+
+* [#9](https://github.com/jantman/vagrant-r10k/issues/9) major refactor to separate config validation and provisioning, and prevent multiple provisioning runs
+* [#15](https://github.com/jantman/vagrant-r10k/issues/17) document how to install Forge modules
+* [#16](https://github.com/jantman/vagrant-r10k/issues/16) more helpful error message if r10k deploy fails with 'Could not resolve host'
 * Change gemspec from ``bundler ~> 1.6`` to ``bundler ~> 1.5`` for testing Vagrant 1.5.0
-* Some updates to ``README.md``
+* Updates to ``README.md``
 * Testing changes
+  * [#12](https://github.com/jantman/vagrant-r10k/issues/12) [vagrant-spec](https://github.com/mitchellh/vagrant-spec/)-based acceptance tests for VirtualBox
+  * [#20](https://github.com/jantman/vagrant-r10k/issues/20) vmware-workstation spec tests are broken and disabled
+  * Major overhaul to spec and acceptance tests
   * Ignore ``spec/`` in coverage
   * Add increased coverage of ``plugin.rb``
   * Change to documentation output for rspec
@@ -14,7 +21,10 @@
   * Add JUnit XML results output
   * Ignore some un-testable code from coverage analysis
   * Add Travis testing for Vagrant 1.5.0
+  * Add ``--retry`` to ``bundle install`` to fix Travis timeout errors
   * Downgrade bundler from 1.6 to 1.5 to work with older testing versions
+  * Bump bundled Vagrant version from 1.7.2 to 1.7.4
+  * [#22](https://github.com/jantman/vagrant-r10k/issues/22) enable pullreview.com code analysis and comments, and make some recommended changes
 
 ## 0.2.0 2015-01-10 Jason Antman <jason@jasonantman.com>
 
