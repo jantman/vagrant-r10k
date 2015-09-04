@@ -1,0 +1,7 @@
+# This is currently a noop but will be supported in the future.
+forge 'forge.puppetlabs.com'
+
+# v1.0.1 -> cdb8d7a186846b49326cec1cfb4623bd77529b04
+mod 'reviewboard',
+  :git => 'https://invalidhost.jasonantman.com/jantman/puppet-reviewboard.git',
+  :ref => 'v1.0.1'

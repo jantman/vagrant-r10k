@@ -165,6 +165,23 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
     end
   end
 
+  describe 'could not resolve git host' do
+    before do
+      setup_before('could_not_resolve_host', options)
+    end
+    after do
+      assert_execute("vagrant", "destroy", "--force")
+    end
+
+    it 'fails with error including how to skip provisioning' do
+      status("Test: vagrant up")
+      up_result = execute('vagrant', 'up', "--provider=#{provider}", '--debug')
+      expect(up_result).to exit_with(1)
+      expect(up_result.stderr).to match(%r"RuntimeError: Couldn't update git cache for https://invalidhost\.jasonantman\.com/jantman/puppet-reviewboard\.git: \"fatal: unable to access 'https://invalidhost\.jasonantman\.com/jantman/puppet-reviewboard\.git/': Could not resolve host: invalidhost\.jasonantman\.com\"\n\nIf you don't have connectivity to the host, running 'vagrant up --no-provision' will skip r10k deploy and all provisioning")
+      ensure_puppet_didnt_run(up_result)
+    end
+  end
+
   # setup skeleton, add box
   def setup_before(skel_name, options)
     environment.skeleton(skel_name)
