@@ -73,7 +73,13 @@ module VagrantPlugins
           end
           unless runner.succeeded?
             runner.get_errors().each do |error|
-              raise ErrorWrapper.new(RuntimeError.new(error[1]))
+              if error[1].message.include?("fatal: unable to access") and error[1].message.include?("Could not resolve host")
+                # if we can't resolve the host, the error should include how to skip provisioning
+                @logger.debug("vagrant-r10k: caught 'Could not resolve host' error")
+                raise ErrorWrapper.new(RuntimeError.new(error[1].message + "\n\nIf you don't have connectivity to the host, running 'vagrant up --no-provision' will skip r10k deploy and all provisioning."))
+              else
+                raise ErrorWrapper.new(RuntimeError.new(error[1]))
+              end
             end
           end
           @env[:ui].info "vagrant-r10k: Deploy finished"

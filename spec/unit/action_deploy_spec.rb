@@ -428,6 +428,68 @@ EOF
       end
     end
 
+    describe 'Could not resolve host' do
+      include_context 'unit' do
+        let(:vagrantfile) { <<-EOF
+Vagrant.configure('2') do |config|
+  config.vm.define :test
+  # r10k plugin to deploy puppet modules
+  # config.r10k.puppet_dir = 'puppet'
+  # config.r10k.puppetfile_path = 'puppet/Puppetfile'
+
+  # Provision the machine with the appliction
+  config.vm.provision "puppet" do |puppet|
+    puppet.manifests_path = "puppet/manifests"
+    puppet.manifest_file  = "default.pp"
+    puppet.module_path = "puppet/modules"
+  end
+end
+EOF
+        }
+      end
+      let(:puppetfile_dbl) { double }
+      before do
+        allow_any_instance_of(VagrantPlugins::R10k::Helpers).to receive(:get_puppetfile).and_return(puppetfile_dbl)
+        allow_any_instance_of(R10K::Logging).to receive(:level=)
+      end
+      it 'raises an error' do
+        # stubs and doubles
+        with_temp_env("VAGRANT_LOG" => "foo") do
+          File.stub(:file?).with('puppetfile/path').and_return(true)
+          runner_dbl = double
+          sync_dbl = double
+          allow(runner_dbl).to receive(:append_task).with(sync_dbl)
+          allow(runner_dbl).to receive(:succeeded?).and_return(false)
+          allow(runner_dbl).to receive(:get_errors).and_return(
+                                 [[
+                                   sync_dbl,
+                                   R10K::Git::GitError.new("Couldn't update git cache for https://foo.com/jantman/bar.git: \"fatal: unable to access 'https://foo.com/jantman/bar.git/': Could not resolve host: foo.com\"")
+                                 ]])
+          allow(sync_dbl).to receive(:new).with(puppetfile_dbl)
+          R10K::TaskRunner.stub(:new) { runner_dbl }
+          R10K::Task::Puppetfile::Sync.stub(:new) { sync_dbl }
+          # expectations
+          expect(R10K::Logging).to receive(:level=).with(3).twice
+          expect(ui).to receive(:info).with("vagrant-r10k: Beginning r10k deploy of puppet modules into module/path using puppetfile/path")
+          logger = subject.instance_variable_get(:@logger)
+          expect(logger).to receive(:debug).once.ordered.with("vagrant::r10k::deploy.deploy called")
+          expect(logger).to receive(:debug).once.ordered.with("vagrant-r10k: creating Puppetfile::Sync task")
+          expect(logger).to receive(:debug).once.ordered.with("vagrant-r10k: appending task to runner queue")
+          expect(runner_dbl).to receive(:append_task).with(sync_dbl).once
+          expect(logger).to receive(:debug).once.ordered.with("vagrant-r10k: running sync task")
+          expect(runner_dbl).to receive(:run).once
+          expect(logger).to receive(:debug).once.ordered.with("vagrant-r10k: sync task complete")
+          expect(logger).to receive(:debug).once.ordered.with("vagrant-r10k: caught 'Could not resolve host' error")
+          expect(runner_dbl).to receive(:succeeded?).once
+          # negative expectations
+          expect(ui).to_not receive(:info).with("vagrant-r10k: Deploy finished")
+          expect(app).to_not receive(:call)
+          # run
+          expect { subject.deploy(env, config) }.to raise_error(VagrantPlugins::R10k::Helpers::ErrorWrapper, /Could not resolve host: foo\.com.*If you don't have connectivity to the host, running 'vagrant up --no-provision' will skip r10k deploy and all provisioning/m)
+        end
+      end
+    end
+
     describe 'puppetfile syntax error' do
       include_context 'unit' do
         let(:vagrantfile) { <<-EOF
