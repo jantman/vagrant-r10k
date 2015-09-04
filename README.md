@@ -62,6 +62,38 @@ The configuration for r10k and puppet would look like:
 
 If you provide an array of directories in puppet.module_path, vagrant-r10k will use the first directory listed for auto configuration. If you want to let r10k use a different directory, see below.
 
+### Puppet Forge Modules in Puppetfile
+
+In order to prevent conflicts with other plugins and allow you to use whatever Puppet version you need, ``puppet`` itself is not included
+in this plugin. This means that, _as-is, this plugin can't install Forge modules in your Puppetfile_, only modules from Git or SVN. This
+is because installing Forge modules requires ``puppet`` itself to download the module.
+
+The two possible ways to deal with this are:
+
+1. Only use git or svn repo references in your Puppetfile.
+2. Install ``puppet`` into Vagrant's gems
+
+For #2, installing puppet into Vagrant's gems, simply ``vagrant plugin install puppet``; for further information,
+see the [vagrant plugin documentation](https://docs.vagrantup.com/v2/plugins/usage.html). If you do this, you should
+probably ensure that puppet is present by putting something like this at the top of your Vagrantfile:
+
+```
+# test that puppet is installed as a Vagrant plugin
+# you can't use ``Vagrant.has_plugin?("puppet")`` because Vagrant's built-in
+# Puppet Provisioner provides a plugin named "puppet", so this always evaluates to true.
+begin
+  gem "puppet"
+rescue Gem::LoadError
+  raise "puppet is not installed in vagrant gems! please run 'vagrant plugin install puppet'"
+end
+```
+
+If you want to check for a specific version of Puppet, you can replace the content of the ``begin`` block with something like:
+
+```
+  gem "puppet", ">=3.8"
+```
+
 ### Usage with explicit path to module installation directory
 
 Add the following to your Vagrantfile, before the puppet section:
