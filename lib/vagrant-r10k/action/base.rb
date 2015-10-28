@@ -32,10 +32,10 @@ module VagrantPlugins
           klass = self.class.name.downcase.split('::').last
           @logger = Log4r::Logger.new("vagrant::r10k::#{klass}")
           if ENV["VAGRANT_LOG"] == "debug"
-            R10K::Logging.level = 0
+            R10K::Logging.level = "debug"
             @logger.level = 0
           else
-            R10K::Logging.level = 3
+            R10K::Logging.level = "info"
           end
         end
       end

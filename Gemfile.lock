@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/jantman/rspec-matcher-num-times.git
-  revision: a34cf9b95ff94512d4c515056ef25a73dbf8d544
+  revision: 03409dfc6a96bb8b3c7c60d8b28ccd20b02cc8c0
   branch: rspec2
   specs:
     rspec-matcher-num-times (0.0.1)
@@ -19,11 +19,11 @@ GIT
 
 GIT
   remote: https://github.com/mitchellh/vagrant.git
-  revision: cd25b820c4425c77b833550e1f1d90f9a7c8be14
+  revision: e4f29e61ca107df7bfc58a88f2c5a99cfad0c941
   branch: master
   specs:
-    vagrant (1.7.4)
-      bundler (>= 1.5.2, <= 1.10.5)
+    vagrant (1.8.0.dev)
+      bundler (>= 1.5.2, <= 1.10.6)
       childprocess (~> 0.5.0)
       erubis (~> 2.7.0)
       hashicorp-checkpoint (~> 0.1.1)
@@ -38,35 +38,35 @@ GIT
       rest-client (>= 1.6.0, < 2.0)
       wdm (~> 0.1.0)
       winrm (~> 1.3)
-      winrm-fs (~> 0.2.0)
+      winrm-fs (~> 0.2.2)
 
 PATH
   remote: .
   specs:
-    vagrant-r10k (0.3.0)
-      r10k (~> 1.2.1)
+    vagrant-r10k (0.4.0)
+      r10k (~> 1.5.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
     builder (3.2.2)
-    childprocess (0.5.6)
+    childprocess (0.5.7)
       ffi (~> 1.0, >= 1.0.11)
-    codecov (0.0.4)
+    codecov (0.1.1)
       json
       simplecov
       url
     colored (1.2)
-    cri (2.5.0)
+    cri (2.6.1)
       colored (~> 1.2)
     diff-lcs (1.2.5)
     docile (1.1.5)
-    domain_name (0.5.24)
+    domain_name (0.5.25)
       unf (>= 0.0.5, < 1.0.0)
     erubis (2.7.0)
-    faraday (0.8.9)
-      multipart-post (~> 1.2.0)
-    faraday_middleware (0.9.1)
+    faraday (0.9.2)
+      multipart-post (>= 1.2, < 3)
+    faraday_middleware (0.9.2)
       faraday (>= 0.7.4, < 0.10)
     faraday_middleware-multi_json (0.0.6)
       faraday_middleware
@@ -81,20 +81,20 @@ GEM
       domain_name (~> 0.5)
     httpclient (2.6.0.1)
     i18n (0.7.0)
-    json (1.8.2)
-    json_pure (1.8.1)
+    json (1.8.3)
+    json_pure (1.8.3)
     listen (3.0.3)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
-    little-plugger (1.1.3)
+    little-plugger (1.1.4)
     log4r (1.1.10)
     logging (1.8.2)
       little-plugger (>= 1.1.3)
       multi_json (>= 1.8.4)
-    mime-types (2.6.1)
+    mime-types (2.6.2)
     mini_portile (0.6.0)
-    multi_json (1.8.4)
-    multipart-post (1.2.0)
+    multi_json (1.11.2)
+    multipart-post (2.0.0)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
     net-sftp (2.1.2)
@@ -104,18 +104,18 @@ GEM
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
     nori (2.6.0)
-    r10k (1.2.1)
-      colored (>= 1.2)
-      cri (~> 2.5.0)
-      faraday (~> 0.8.8)
+    r10k (1.5.1)
+      colored (= 1.2)
+      cri (~> 2.6.1)
+      faraday (~> 0.9.0)
       faraday_middleware (~> 0.9.0)
-      faraday_middleware-multi_json (~> 0.0.5)
-      json_pure (~> 1.8.1)
-      log4r (>= 1.1.10)
-      multi_json (~> 1.8.2)
-      systemu (~> 2.5.2)
+      faraday_middleware-multi_json (~> 0.0.6)
+      json_pure (~> 1.8)
+      log4r (= 1.1.10)
+      multi_json (~> 1.10)
+      semantic_puppet (~> 0.1.0)
     rake (10.4.2)
-    rb-fsevent (0.9.5)
+    rb-fsevent (0.9.6)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
     rb-kqueue (0.2.4)
@@ -131,19 +131,18 @@ GEM
     rspec-core (2.99.2)
     rspec-expectations (2.99.2)
       diff-lcs (>= 1.1.3, < 2.0)
-    rspec-mocks (2.99.2)
-    rspec_junit_formatter (0.2.0)
+    rspec-mocks (2.99.4)
+    rspec_junit_formatter (0.2.3)
       builder (< 4)
-      rspec (>= 2, < 4)
-      rspec-core (!= 2.12.0)
+      rspec-core (>= 2, < 4, != 2.12.0)
     rubyntlm (0.4.0)
     rubyzip (1.1.7)
-    simplecov (0.9.2)
+    semantic_puppet (0.1.1)
+    simplecov (0.10.0)
       docile (~> 1.1.0)
-      multi_json (~> 1.0)
-      simplecov-html (~> 0.9.0)
-    simplecov-html (0.9.0)
-    systemu (2.5.2)
+      json (~> 1.8)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.0)
     thor (0.18.1)
     unf (0.1.4)
       unf_ext
@@ -151,7 +150,7 @@ GEM
     url (0.3.2)
     uuidtools (2.1.5)
     wdm (0.1.1)
-    winrm (1.3.3)
+    winrm (1.3.4)
       builder (>= 2.1.2)
       gssapi (~> 1.2)
       gyoku (~> 1.0)

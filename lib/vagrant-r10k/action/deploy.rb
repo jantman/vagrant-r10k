@@ -47,9 +47,9 @@ module VagrantPlugins
           env[:ui].info "vagrant-r10k: Beginning r10k deploy of puppet modules into #{config[:module_path]} using #{config[:puppetfile_path]}"
 
           if ENV["VAGRANT_LOG"] == "debug"
-            R10K::Logging.level = 0
+            R10K::Logging.level = 'debug'
           else
-            R10K::Logging.level = 3
+            R10K::Logging.level = 'info'
           end
 
           unless File.file?(config[:puppetfile_path])
