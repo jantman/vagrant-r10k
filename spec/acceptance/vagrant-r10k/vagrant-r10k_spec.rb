@@ -193,7 +193,7 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
   def ensure_successful_run(up_result, workdir)
     expect(up_result).to exit_with(0)
     # version checks
-    expect(up_result.stderr).to include('global:   - r10k = 1.2.1')
+    expect(up_result.stderr).to include('global:   - r10k = 1.5.1')
     expect(up_result.stderr).to include("global:   - vagrant-r10k = #{VagrantPlugins::R10k::VERSION}")
     expect(up_result.stderr).to include('Registered plugin: vagrant-r10k')
     expect(up_result.stderr).to include('vagrant::r10k::validate called')
