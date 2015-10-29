@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+## 0.4.0 2015-10-29 Jason Antman <jason@jasonantman.com>
+
+* [#13]() / [PR #34/35](https://github.com/jantman/vagrant-r10k/pull/35) - Upgrade r10k dependency to 1.5.1 (thanks to [@cdenneen](https://github.com/cdenneen) for the work).
+
 ## 0.3.0 2015-09-04 Jason Antman <jason@jasonantman.com>
 
 * [#9](https://github.com/jantman/vagrant-r10k/issues/9) major refactor to separate config validation and provisioning, and prevent multiple provisioning runs
