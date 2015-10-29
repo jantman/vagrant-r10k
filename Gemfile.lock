@@ -19,11 +19,11 @@ GIT
 
 GIT
   remote: https://github.com/mitchellh/vagrant.git
-  revision: e4f29e61ca107df7bfc58a88f2c5a99cfad0c941
-  branch: master
+  revision: 78ea5e4a78ce644717ab16d8001ab77430168f0f
+  tag: v1.7.4
   specs:
-    vagrant (1.8.0.dev)
-      bundler (>= 1.5.2, <= 1.10.6)
+    vagrant (1.7.4)
+      bundler (>= 1.5.2, <= 1.10.5)
       childprocess (~> 0.5.0)
       erubis (~> 2.7.0)
       hashicorp-checkpoint (~> 0.1.1)
@@ -38,7 +38,7 @@ GIT
       rest-client (>= 1.6.0, < 2.0)
       wdm (~> 0.1.0)
       winrm (~> 1.3)
-      winrm-fs (~> 0.2.2)
+      winrm-fs (~> 0.2.0)
 
 PATH
   remote: .
