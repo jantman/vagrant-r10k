@@ -3,6 +3,7 @@ require_relative 'sharedcontext'
 require_relative 'shared_expectations'
 require 'vagrant-r10k/action/base'
 require 'vagrant-r10k/action/validate'
+require 'r10k/errors'
 
 include SharedExpectations
 
@@ -222,7 +223,9 @@ EOF
       end
       it 'should call app.call' do
         # positive assertions
-        allow(pf_dbl).to receive(:load).and_raise(RuntimeError)        
+        orig = RuntimeError.new("foo")
+        ex = R10K::Error.wrap(orig, 'message')
+        allow(pf_dbl).to receive(:load).and_raise(ex)
         expect_any_instance_of(VagrantPlugins::R10k::Helpers).to receive(:r10k_enabled?).with(env).once
         expect_any_instance_of(VagrantPlugins::R10k::Helpers).to receive(:provision_enabled?).with(env).once
         expect_any_instance_of(VagrantPlugins::R10k::Helpers).to receive(:r10k_config).with(env).once

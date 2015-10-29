@@ -5,6 +5,7 @@ require 'vagrant-r10k/action/base'
 require 'vagrant-r10k/action/deploy'
 require 'r10k/task/puppetfile'
 require 'r10k/git/errors'
+require 'r10k/errors'
 
 include SharedExpectations
 
@@ -522,7 +523,9 @@ EOF
           sync_dbl = double
           allow(runner_dbl).to receive(:append_task).with(sync_dbl)
           allow(runner_dbl).to receive(:succeeded?).and_return(false)
-          allow(runner_dbl).to receive(:run).and_raise(SyntaxError.new("some syntax error"))
+          orig = SyntaxError.new("some syntax error")
+          ex = R10K::Error.wrap(orig, 'message')
+          allow(runner_dbl).to receive(:run).and_raise(ex)
           allow(sync_dbl).to receive(:new).with(puppetfile_dbl)
           R10K::TaskRunner.stub(:new) { runner_dbl }
           R10K::Task::Puppetfile::Sync.stub(:new) { sync_dbl }
