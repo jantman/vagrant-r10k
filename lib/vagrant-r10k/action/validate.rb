@@ -34,7 +34,7 @@ module VagrantPlugins
             puppetfile.load
           rescue Exception => ex
             @env[:ui].error "Invalid syntax in Puppetfile at #{config[:puppetfile_path]}"
-            raise ErrorWrapper.new(ex)
+            raise ErrorWrapper.new(ex.original)
           end
 
           @app.call(env)

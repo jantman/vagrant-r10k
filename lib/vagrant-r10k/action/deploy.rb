@@ -47,9 +47,9 @@ module VagrantPlugins
           env[:ui].info "vagrant-r10k: Beginning r10k deploy of puppet modules into #{config[:module_path]} using #{config[:puppetfile_path]}"
 
           if ENV["VAGRANT_LOG"] == "debug"
-            R10K::Logging.level = 0
+            R10K::Logging.level = 'debug'
           else
-            R10K::Logging.level = 3
+            R10K::Logging.level = 'info'
           end
 
           unless File.file?(config[:puppetfile_path])
@@ -69,7 +69,7 @@ module VagrantPlugins
             @logger.debug("vagrant-r10k: sync task complete")
           rescue Exception => ex
             @env[:ui].error "Invalid syntax in Puppetfile at #{config[:puppetfile_path]}"
-            raise ErrorWrapper.new(ex)
+            raise ErrorWrapper.new(ex.original)
           end
           unless runner.succeeded?
             runner.get_errors().each do |error|

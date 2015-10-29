@@ -21,16 +21,16 @@ describe VagrantPlugins::R10k::Action::Base do
       expect(x.instance_variable_get(:@logger).fullname).to eq('vagrant::r10k::base')
     end
 
-    it 'sets logging levels to 3 when not running in debug mode' do
+    it 'sets logging levels to 2 when not running in debug mode' do
       allow(ENV).to receive(:[]).with("VAGRANT_LOG").and_return('no')
       x = described_class.new(:app, :env)
-      expect(R10K::Logging.level).to eq(3)
+      expect(R10K::Logging.level).to eq(2)
     end
 
-    it 'sets logging levels to 0 when running in debug mode' do
+    it 'sets logging levels to 1 when running in debug mode' do
       allow(ENV).to receive(:[]).with("VAGRANT_LOG").and_return('debug')
       x = described_class.new(:app, :env)
-      expect(R10K::Logging.level).to eq(0)
+      expect(R10K::Logging.level).to eq(1)
       expect(x.instance_variable_get(:@logger).level).to eq(0)
     end
   end

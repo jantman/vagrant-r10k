@@ -177,7 +177,7 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
       status("Test: vagrant up")
       up_result = execute('vagrant', 'up', "--provider=#{provider}", '--debug')
       expect(up_result).to exit_with(1)
-      expect(up_result.stderr).to match(%r"RuntimeError: Couldn't update git cache for https://invalidhost\.jasonantman\.com/jantman/puppet-reviewboard\.git: \"fatal: unable to access 'https://invalidhost\.jasonantman\.com/jantman/puppet-reviewboard\.git/': Could not resolve host: invalidhost\.jasonantman\.com\"\n\nIf you don't have connectivity to the host, running 'vagrant up --no-provision' will skip r10k deploy and all provisioning")
+      expect(up_result.stderr).to match(%r"fatal: unable to access 'https://invalidhost\.jasonantman\.com/jantman/puppet-reviewboard\.git/': Could not resolve host: invalidhost\.jasonantman\.com\nExit code: 128\n\nIf you don't have connectivity to the host, running 'vagrant up --no-provision' will skip r10k deploy and all provisioning")
       ensure_puppet_didnt_run(up_result)
     end
   end
@@ -193,7 +193,7 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
   def ensure_successful_run(up_result, workdir)
     expect(up_result).to exit_with(0)
     # version checks
-    expect(up_result.stderr).to include('global:   - r10k = 1.2.1')
+    expect(up_result.stderr).to include('global:   - r10k = 1.5.1')
     expect(up_result.stderr).to include("global:   - vagrant-r10k = #{VagrantPlugins::R10k::VERSION}")
     expect(up_result.stderr).to include('Registered plugin: vagrant-r10k')
     expect(up_result.stderr).to include('vagrant::r10k::validate called')

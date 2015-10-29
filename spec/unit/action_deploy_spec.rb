@@ -5,6 +5,7 @@ require 'vagrant-r10k/action/base'
 require 'vagrant-r10k/action/deploy'
 require 'r10k/task/puppetfile'
 require 'r10k/git/errors'
+require 'r10k/errors'
 
 include SharedExpectations
 
@@ -239,7 +240,7 @@ EOF
           R10K::TaskRunner.stub(:new) { runner_dbl }
           R10K::Task::Puppetfile::Sync.stub(:new) { sync_dbl }
           # expectations
-          expect(R10K::Logging).to receive(:level=).with(3).twice
+          expect(R10K::Logging).to receive(:level=).with('info').twice
           expect(ui).to receive(:info).with("vagrant-r10k: Beginning r10k deploy of puppet modules into module/path using puppetfile/path")
           logger = subject.instance_variable_get(:@logger)
           expect(logger).to receive(:debug).once.ordered.with("vagrant::r10k::deploy.deploy called")
@@ -294,7 +295,7 @@ EOF
           R10K::TaskRunner.stub(:new) { runner_dbl }
           R10K::Task::Puppetfile::Sync.stub(:new) { sync_dbl }
           # expectations
-          expect(R10K::Logging).to receive(:level=).with(0).twice
+          expect(R10K::Logging).to receive(:level=).with('debug').twice
           expect(ui).to receive(:info).with("vagrant-r10k: Beginning r10k deploy of puppet modules into module/path using puppetfile/path")
           logger = subject.instance_variable_get(:@logger)
           expect(logger).to receive(:debug).once.ordered.with("vagrant::r10k::deploy.deploy called")
@@ -408,7 +409,7 @@ EOF
           R10K::TaskRunner.stub(:new) { runner_dbl }
           R10K::Task::Puppetfile::Sync.stub(:new) { sync_dbl }
           # expectations
-          expect(R10K::Logging).to receive(:level=).with(3).twice
+          expect(R10K::Logging).to receive(:level=).with('info').twice
           expect(ui).to receive(:info).with("vagrant-r10k: Beginning r10k deploy of puppet modules into module/path using puppetfile/path")
           logger = subject.instance_variable_get(:@logger)
           expect(logger).to receive(:debug).once.ordered.with("vagrant::r10k::deploy.deploy called")
@@ -469,7 +470,7 @@ EOF
           R10K::TaskRunner.stub(:new) { runner_dbl }
           R10K::Task::Puppetfile::Sync.stub(:new) { sync_dbl }
           # expectations
-          expect(R10K::Logging).to receive(:level=).with(3).twice
+          expect(R10K::Logging).to receive(:level=).with('info').twice
           expect(ui).to receive(:info).with("vagrant-r10k: Beginning r10k deploy of puppet modules into module/path using puppetfile/path")
           logger = subject.instance_variable_get(:@logger)
           expect(logger).to receive(:debug).once.ordered.with("vagrant::r10k::deploy.deploy called")
@@ -522,12 +523,14 @@ EOF
           sync_dbl = double
           allow(runner_dbl).to receive(:append_task).with(sync_dbl)
           allow(runner_dbl).to receive(:succeeded?).and_return(false)
-          allow(runner_dbl).to receive(:run).and_raise(SyntaxError.new("some syntax error"))
+          orig = SyntaxError.new("some syntax error")
+          ex = R10K::Error.wrap(orig, 'message')
+          allow(runner_dbl).to receive(:run).and_raise(ex)
           allow(sync_dbl).to receive(:new).with(puppetfile_dbl)
           R10K::TaskRunner.stub(:new) { runner_dbl }
           R10K::Task::Puppetfile::Sync.stub(:new) { sync_dbl }
           # expectations
-          expect(R10K::Logging).to receive(:level=).with(3).twice
+          expect(R10K::Logging).to receive(:level=).with('info').twice
           expect(ui).to receive(:info).with("vagrant-r10k: Beginning r10k deploy of puppet modules into module/path using puppetfile/path")
           logger = subject.instance_variable_get(:@logger)
           expect(logger).to receive(:debug).once.ordered.with("vagrant::r10k::deploy.deploy called")
