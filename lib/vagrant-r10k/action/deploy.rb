@@ -29,8 +29,6 @@ module VagrantPlugins
           @logger.debug("vagrant::r10k::deploy: env_dir_path=#{config[:env_dir_path]}")
           @logger.debug("vagrant::r10k::deploy: puppetfile_path=#{config[:puppetfile_path]}")
           @logger.debug("vagrant::r10k::deploy: module_path=#{config[:module_path]}")
-          @logger.debug("vagrant::r10k::deploy: manifests=#{config[:manifests]}")
-          @logger.debug("vagrant::r10k::deploy: manifest_file=#{config[:manifest_file]}")
           @logger.debug("vagrant::r10k::deploy: puppet_dir=#{config[:puppet_dir]}")
 
           deploy(env, config)

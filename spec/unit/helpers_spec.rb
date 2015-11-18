@@ -214,7 +214,6 @@ describe VagrantPlugins::R10k::Helpers do
     context 'no methods return nil' do
       before do
         prov_dbl = double
-        prov_dbl.stub_chain(:config, :manifest_file).and_return('manifest/file')
         prov_dbl.stub_chain(:config, :manifests_path).and_return([0, 'manifests/path'])
         allow_any_instance_of(VagrantPlugins::R10k::Helpers).to receive(:env_dir).and_return('/my/env/dir')
         allow_any_instance_of(VagrantPlugins::R10k::Helpers).to receive(:puppetfile_path).and_return('puppet/file/path')
@@ -228,8 +227,6 @@ describe VagrantPlugins::R10k::Helpers do
                                          :env_dir_path    => '/my/env/dir',
                                          :puppetfile_path => 'puppet/file/path',
                                          :module_path     => 'module/path',
-                                         :manifest_file   => '/my/env/dir/manifest/file',
-                                         :manifests       => '/my/env/dir/manifests/path',
                                          :puppet_dir      => '/my/env/dir/puppet/dir',
                                        })
       end
@@ -284,7 +281,17 @@ describe VagrantPlugins::R10k::Helpers do
         env = {:machine => double, :ui => double}
         allow(env[:ui]).to receive(:info).with("vagrant-r10k: Building the r10k module path with puppet provisioner module_path \"\". (if module_path is an array, first element is used)")
         env[:machine].stub_chain(:config, :r10k, :module_path).and_return('r10kmodule/path')
-        expect { module_path(env, prov_dbl, '/env/dir/path') }.to raise_error(VagrantPlugins::R10k::Helpers::ErrorWrapper, /module_path "r10kmodule\/path" is not the same as in puppet provisioner; please correct this condition/)
+        expect { module_path(env, prov_dbl, '/env/dir/path') }.to raise_error(VagrantPlugins::R10k::Helpers::ErrorWrapper, /module_path "r10kmodule\/path" is not the same as in puppet provisioner \(module\/path\); please correct this condition/)
+      end
+    end
+    context 'config.r10k.module_path set and provisioner module_path nil' do
+      it 'returns the joined module_path' do
+        prov_dbl = double
+        prov_dbl.stub_chain(:config, :module_path).and_return(nil)
+        env = {:machine => double, :ui => double}
+        allow(env[:ui]).to receive(:info).with("vagrant-r10k: Puppet provisioner module_path is nil, assuming puppet4 environment mode")
+        env[:machine].stub_chain(:config, :r10k, :module_path).and_return('module/path')
+        expect(module_path(env, prov_dbl, '/env/dir/path')).to eq('/env/dir/path/module/path')
       end
     end
   end
