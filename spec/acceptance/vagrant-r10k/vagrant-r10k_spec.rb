@@ -50,6 +50,34 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
     end
   end
 
+  describe 'configured correctly - puppet4 environment' do
+    before do
+      setup_before('puppet4', options)
+    end
+    after do
+      assert_execute("vagrant", "destroy", "--force")
+    end
+
+    it 'deploys Puppetfile modules in an environment' do
+      status("Test: vagrant up")
+      up_result = assert_execute('vagrant', 'up', "--provider=#{provider}", '--debug')
+      ensure_successful_run(up_result, environment.workdir)
+      status("Test: reviewboard module")
+      rb_dir = File.join(environment.workdir, 'puppet', 'modules', 'reviewboard')
+      expect(File.directory?(rb_dir)).to be_truthy
+      rb_result = assert_execute('bash', 'gitcheck.sh', 'puppet/modules/reviewboard')
+      expect(rb_result).to exit_with(0)
+      expect(rb_result.stdout).to match(/tag: v1\.0\.1 @ cdb8d7a186846b49326cec1cfb4623bd77529b04 \(origin: https:\/\/github\.com\/jantman\/puppet-reviewboard\.git\)/)
+      
+      status("Test: nodemeister module")
+      nm_dir = File.join(environment.workdir, 'puppet', 'modules', 'nodemeister')
+      expect(File.directory?(nm_dir)).to be_truthy
+      nm_result = assert_execute('bash', 'gitcheck.sh', 'puppet/modules/nodemeister')
+      expect(nm_result).to exit_with(0)
+      expect(nm_result.stdout).to match(/tag: 0\.1\.0 @ 3a504b5f66ebe1853bda4ee065fce18118958d84 \(origin: https:\/\/github\.com\/jantman\/puppet-nodemeister\.git\)/)
+    end
+  end
+
   describe 'destroy when configured correctly' do
     before do
       setup_before('correct', options)
