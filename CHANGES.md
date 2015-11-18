@@ -5,6 +5,8 @@
 ## 0.4.1 2015-11-18 Jason Antman <jason@jasonantman.com>
 
 * [#36](https://github.com/jantman/vagrant-r10k/issues/36) - Fix "no implicit conversion of nil into String" issue with puppet4, caused by ``config.r10k.manifest_file`` and/or ``config.r10k.manifests_path`` not being specified. This removes all use of these parameters, which were only used in log messages. It also removes validation that the Puppet provisioner's ``module_path`` matches that specified for r10k.
+* Fix ``.ruby-version`` (2.1.0 to 2.1.1)
+* Add ``.rebuildbot.sh`` for [rebuildbot](https://github.com/jantman/rebuildbot) testing
 
 ## 0.4.0 2015-10-29 Jason Antman <jason@jasonantman.com>
 
