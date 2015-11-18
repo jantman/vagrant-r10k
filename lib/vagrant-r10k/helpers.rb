@@ -97,15 +97,13 @@ module VagrantPlugins
       #
       # @return [Hash]
       def r10k_config(env)
-        ret = { :manifests => nil, :module_path => nil, :manifest_file => nil }
+        ret = { :module_path => nil }
         ret[:env_dir_path] = env_dir(env)
         ret[:puppetfile_path] = puppetfile_path(env)
         prov = puppet_provisioner(env)
         return nil if prov.nil?
         ret[:module_path] = module_path(env, prov, ret[:env_dir_path])
         return nil if ret[:module_path].nil?
-        ret[:manifest_file] = File.join(ret[:env_dir_path], prov.config.manifest_file)
-        ret[:manifests] = File.join(ret[:env_dir_path], prov.config.manifests_path[1])
         ret[:puppet_dir] = File.join(ret[:env_dir_path], env[:machine].config.r10k.puppet_dir)
         ret
       end

@@ -214,7 +214,6 @@ describe VagrantPlugins::R10k::Helpers do
     context 'no methods return nil' do
       before do
         prov_dbl = double
-        prov_dbl.stub_chain(:config, :manifest_file).and_return('manifest/file')
         prov_dbl.stub_chain(:config, :manifests_path).and_return([0, 'manifests/path'])
         allow_any_instance_of(VagrantPlugins::R10k::Helpers).to receive(:env_dir).and_return('/my/env/dir')
         allow_any_instance_of(VagrantPlugins::R10k::Helpers).to receive(:puppetfile_path).and_return('puppet/file/path')
@@ -228,8 +227,6 @@ describe VagrantPlugins::R10k::Helpers do
                                          :env_dir_path    => '/my/env/dir',
                                          :puppetfile_path => 'puppet/file/path',
                                          :module_path     => 'module/path',
-                                         :manifest_file   => '/my/env/dir/manifest/file',
-                                         :manifests       => '/my/env/dir/manifests/path',
                                          :puppet_dir      => '/my/env/dir/puppet/dir',
                                        })
       end

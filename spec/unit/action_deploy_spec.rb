@@ -145,7 +145,6 @@ EOF
                       :puppetfile_path => 'puppetfile/path',
                       :module_path => 'module/path',
                       :manifests => 'manifests',
-                      :manifest_file => 'manifest/file',
                       :puppet_dir => 'puppet/dir',
                     }}
       let(:pf_dbl) { double }
@@ -184,8 +183,6 @@ EOF
         expect(logger).to receive(:debug).once.ordered.with("vagrant::r10k::deploy: env_dir_path=env/dir/path")
         expect(logger).to receive(:debug).once.ordered.with("vagrant::r10k::deploy: puppetfile_path=puppetfile/path")
         expect(logger).to receive(:debug).once.ordered.with("vagrant::r10k::deploy: module_path=module/path")
-        expect(logger).to receive(:debug).once.ordered.with("vagrant::r10k::deploy: manifests=manifests")
-        expect(logger).to receive(:debug).once.ordered.with("vagrant::r10k::deploy: manifest_file=manifest/file")
         expect(logger).to receive(:debug).once.ordered.with("vagrant::r10k::deploy: puppet_dir=puppet/dir")
         expect(subject).to receive(:deploy).with(env, config).once
         expect(app).to receive(:call).once.with(env)

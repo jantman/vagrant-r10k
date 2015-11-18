@@ -61,18 +61,21 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
     it 'deploys Puppetfile modules in an environment' do
       status("Test: vagrant up")
       up_result = assert_execute('vagrant', 'up', "--provider=#{provider}", '--debug')
-      ensure_successful_run(up_result, environment.workdir)
+      ensure_successful_run(up_result, environment.workdir, expect_building=false, moddir='environments/myenv/modules', pupfile='environments/myenv/Puppetfile', do_ensure_ran=false)
+      expect(up_result.stdout).to include('Running provisioner: puppet')
+      expect(up_result.stdout).to include('Running Puppet with environment myenv')
+      expect(up_result.stdout).to include('vagrant-r10k puppet run')
       status("Test: reviewboard module")
-      rb_dir = File.join(environment.workdir, 'puppet', 'modules', 'reviewboard')
+      rb_dir = File.join(environment.workdir, 'environments', 'myenv', 'modules', 'reviewboard')
       expect(File.directory?(rb_dir)).to be_truthy
-      rb_result = assert_execute('bash', 'gitcheck.sh', 'puppet/modules/reviewboard')
+      rb_result = assert_execute('bash', 'gitcheck.sh', 'environments/myenv/modules/reviewboard')
       expect(rb_result).to exit_with(0)
       expect(rb_result.stdout).to match(/tag: v1\.0\.1 @ cdb8d7a186846b49326cec1cfb4623bd77529b04 \(origin: https:\/\/github\.com\/jantman\/puppet-reviewboard\.git\)/)
       
       status("Test: nodemeister module")
-      nm_dir = File.join(environment.workdir, 'puppet', 'modules', 'nodemeister')
+      nm_dir = File.join(environment.workdir, 'environments', 'myenv', 'modules', 'nodemeister')
       expect(File.directory?(nm_dir)).to be_truthy
-      nm_result = assert_execute('bash', 'gitcheck.sh', 'puppet/modules/nodemeister')
+      nm_result = assert_execute('bash', 'gitcheck.sh', 'environments/myenv/modules/nodemeister')
       expect(nm_result).to exit_with(0)
       expect(nm_result.stdout).to match(/tag: 0\.1\.0 @ 3a504b5f66ebe1853bda4ee065fce18118958d84 \(origin: https:\/\/github\.com\/jantman\/puppet-nodemeister\.git\)/)
     end
@@ -218,7 +221,7 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
   end
 
   # checks for a successful up run with r10k deployment and puppet provisioning
-  def ensure_successful_run(up_result, workdir)
+  def ensure_successful_run(up_result, workdir, expect_building=true, moddir='puppet/modules', pupfile='puppet/Puppetfile', do_ensure_ran=true)
     expect(up_result).to exit_with(0)
     # version checks
     expect(up_result.stderr).to include('global:   - r10k = 1.5.1')
@@ -235,16 +238,20 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
     # modulegetter BEFORE ConfigValidate
     expect(up_result.stderr).to match(%r"(?!ConfigValidate)+default: vagrant-r10k: Deploy finished.*Vagrant::Action::Builtin::ConfigValidate"m), "modulegetter runs before ConfigValidate"
     # other checks
-    expect(up_result.stdout).to include('vagrant-r10k: Building the r10k module path with puppet provisioner module_path "puppet/modules"')
-    expect(up_result.stdout).to include("vagrant-r10k: Beginning r10k deploy of puppet modules into #{workdir}/puppet/modules using #{workdir}/puppet/Puppetfile")
+    if expect_building then
+      expect(up_result.stdout).to include('vagrant-r10k: Building the r10k module path with puppet provisioner module_path "puppet/modules"')
+    end
+    expect(up_result.stdout).to include("vagrant-r10k: Beginning r10k deploy of puppet modules into #{workdir}/#{moddir} using #{workdir}/#{pupfile}")
     expect(up_result.stdout).to include('vagrant-r10k: Deploy finished')
     # file tests
-    expect(File).to exist("#{workdir}/puppet/modules/reviewboard/Modulefile")
-    expect(File).to exist("#{workdir}/puppet/modules/nodemeister/Modulefile")
-    expect(File).to exist("#{workdir}/puppet/modules/nodemeister/manifests/init.pp")
+    expect(File).to exist("#{workdir}/#{moddir}/reviewboard/Modulefile")
+    expect(File).to exist("#{workdir}/#{moddir}/nodemeister/Modulefile")
+    expect(File).to exist("#{workdir}/#{moddir}/nodemeister/manifests/init.pp")
 
     # ensure puppet ran
-    ensure_puppet_ran(up_result)
+    if do_ensure_ran then
+      ensure_puppet_ran(up_result)
+    end
   end
 
   # ensure that r10k didnt run
