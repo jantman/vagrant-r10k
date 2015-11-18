@@ -123,8 +123,10 @@ module VagrantPlugins
           module_path = env[:machine].config.r10k.module_path
           if prov.config.module_path.is_a?(Array) and ! prov.config.module_path.include?(module_path)
             raise ErrorWrapper.new(RuntimeError.new("vagrant-r10k: module_path \"#{module_path}\" is not within the ones defined in puppet provisioner; please correct this condition"))
+          elsif prov.config.module_path.nil?
+            env[:ui].info "vagrant-r10k: Puppet provisioner module_path is nil, assuming puppet4 environment mode"
           elsif ! prov.config.module_path.is_a?(Array) and prov.config.module_path != module_path
-            raise ErrorWrapper.new(RuntimeError.new("vagrant-r10k: module_path \"#{module_path}\" is not the same as in puppet provisioner; please correct this condition"))
+            raise ErrorWrapper.new(RuntimeError.new("vagrant-r10k: module_path \"#{module_path}\" is not the same as in puppet provisioner (#{prov.config.module_path}); please correct this condition"))
           end
         # no modulepath explict set in config, build one from the provisioner config
         else

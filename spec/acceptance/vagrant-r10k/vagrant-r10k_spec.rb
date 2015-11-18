@@ -131,7 +131,7 @@ shared_examples 'provider/vagrant-r10k' do |provider, options|
       status("Test: vagrant up")
       up_result = execute('vagrant', 'up', "--provider=#{provider}")
       expect(up_result).to exit_with(1)
-      expect(up_result.stderr).to match('RuntimeError: vagrant-r10k: module_path "puppet/NOTmodules" is not the same as in puppet provisioner; please correct this condition')
+      expect(up_result.stderr).to match(/RuntimeError: vagrant-r10k: module_path "puppet\/NOTmodules" is not the same as in puppet provisioner \(puppet\/modules\); please correct this condition/)
       ensure_r10k_didnt_run(up_result, environment.workdir)
       ensure_puppet_didnt_run(up_result)
     end
