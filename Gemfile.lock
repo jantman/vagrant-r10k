@@ -43,7 +43,7 @@ GIT
 PATH
   remote: .
   specs:
-    vagrant-r10k (0.4.0)
+    vagrant-r10k (0.4.1)
       r10k (~> 1.5.0)
 
 GEM
