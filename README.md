@@ -132,6 +132,36 @@ The configuration for r10k and puppet would look like:
       puppet.module_path = ["puppet/modules", "puppet/vendor"]
     end
 
+### Usage With Puppet4 Environment-Based Provisioner
+
+Puppet4 discontinues use of the ``manifest_file`` and ``manifests_path`` parameters, and also makes the ``module_path`` parameter optional
+for Puppet. In cases where only ``environment`` and ``environment_path`` are specified, ``module_path`` will be parsed from the environment's
+``environment.conf``.
+
+vagrant-r10k does not handle parsing ``environment.conf``; you __must__ still specify the ``module_path`` for r10k to deploy modules into.
+
+Here is an example Vagrantfile (taken from vagrant-r10k's [acceptance tests](https://github.com/jantman/vagrant-r10k/blob/master/spec/acceptance/skeletons/puppet4/Vagrantfile))
+for use with environment-based configuration. Note that ``config.r10k.module_path`` is still specified. You can see the directory structure of this example
+[here](https://github.com/jantman/vagrant-r10k/tree/master/spec/acceptance/skeletons/puppet4).
+
+```
+Vagrant.configure("2") do |config|
+  config.vm.box = "vagrantr10kspec"
+  config.vm.network "private_network", type: "dhcp"
+
+  # r10k plugin to deploy puppet modules
+  config.r10k.puppet_dir = "environments/myenv"
+  config.r10k.puppetfile_path = "environments/myenv/Puppetfile"
+  config.r10k.module_path = "environments/myenv/modules"
+
+  # Provision the machine with the appliction
+  config.vm.provision "puppet" do |puppet|
+    puppet.environment = "myenv"
+    puppet.environment_path  = "environments"
+  end
+end
+```
+
 ## Getting Help
 
 Bug reports, feature requests, and pull requests are always welcome. At this time, the
