@@ -3,7 +3,7 @@ require_relative 'sharedcontext'
 require_relative 'shared_expectations'
 require 'vagrant-r10k/action/base'
 require 'vagrant-r10k/action/deploy'
-require 'r10k/task/puppetfile'
+require 'r10k/action/puppetfile'
 require 'r10k/git/errors'
 require 'r10k/errors'
 
@@ -235,7 +235,7 @@ EOF
           allow(runner_dbl).to receive(:succeeded?).and_return(true)
           allow(sync_dbl).to receive(:new).with(puppetfile_dbl)
           R10K::TaskRunner.stub(:new) { runner_dbl }
-          R10K::Task::Puppetfile::Sync.stub(:new) { sync_dbl }
+          R10K::Action::Puppetfile::Sync.stub(:new) { sync_dbl }
           # expectations
           expect(R10K::Logging).to receive(:level=).with('info').twice
           expect(ui).to receive(:info).with("vagrant-r10k: Beginning r10k deploy of puppet modules into module/path using puppetfile/path")
@@ -290,7 +290,7 @@ EOF
           allow(runner_dbl).to receive(:succeeded?).and_return(true)
           allow(sync_dbl).to receive(:new).with(puppetfile_dbl)
           R10K::TaskRunner.stub(:new) { runner_dbl }
-          R10K::Task::Puppetfile::Sync.stub(:new) { sync_dbl }
+          R10K::Action::Puppetfile::Sync.stub(:new) { sync_dbl }
           # expectations
           expect(R10K::Logging).to receive(:level=).with('debug').twice
           expect(ui).to receive(:info).with("vagrant-r10k: Beginning r10k deploy of puppet modules into module/path using puppetfile/path")
@@ -344,7 +344,7 @@ EOF
           allow(runner_dbl).to receive(:succeeded?).and_return(true)
           allow(sync_dbl).to receive(:new).with(puppetfile_dbl)
           R10K::TaskRunner.stub(:new) { runner_dbl }
-          R10K::Task::Puppetfile::Sync.stub(:new) { sync_dbl }
+          R10K::Action::Puppetfile::Sync.stub(:new) { sync_dbl }
           # expectations
           expect(ui).to receive(:info).with("vagrant-r10k: Beginning r10k deploy of puppet modules into module/path using puppetfile/path")
           logger = subject.instance_variable_get(:@logger)
@@ -404,7 +404,7 @@ EOF
                                  ]])
           allow(sync_dbl).to receive(:new).with(puppetfile_dbl)
           R10K::TaskRunner.stub(:new) { runner_dbl }
-          R10K::Task::Puppetfile::Sync.stub(:new) { sync_dbl }
+          R10K::Action::Puppetfile::Sync.stub(:new) { sync_dbl }
           # expectations
           expect(R10K::Logging).to receive(:level=).with('info').twice
           expect(ui).to receive(:info).with("vagrant-r10k: Beginning r10k deploy of puppet modules into module/path using puppetfile/path")
@@ -465,7 +465,7 @@ EOF
                                  ]])
           allow(sync_dbl).to receive(:new).with(puppetfile_dbl)
           R10K::TaskRunner.stub(:new) { runner_dbl }
-          R10K::Task::Puppetfile::Sync.stub(:new) { sync_dbl }
+          R10K::Action::Puppetfile::Sync.stub(:new) { sync_dbl }
           # expectations
           expect(R10K::Logging).to receive(:level=).with('info').twice
           expect(ui).to receive(:info).with("vagrant-r10k: Beginning r10k deploy of puppet modules into module/path using puppetfile/path")
@@ -525,7 +525,7 @@ EOF
           allow(runner_dbl).to receive(:run).and_raise(ex)
           allow(sync_dbl).to receive(:new).with(puppetfile_dbl)
           R10K::TaskRunner.stub(:new) { runner_dbl }
-          R10K::Task::Puppetfile::Sync.stub(:new) { sync_dbl }
+          R10K::Action::Puppetfile::Sync.stub(:new) { sync_dbl }
           # expectations
           expect(R10K::Logging).to receive(:level=).with('info').twice
           expect(ui).to receive(:info).with("vagrant-r10k: Beginning r10k deploy of puppet modules into module/path using puppetfile/path")

@@ -10,8 +10,8 @@ module SharedExpectations
     expect(vars[:ui]).to receive(:info).with(/Beginning r10k deploy/).once
     R10K::Puppetfile.stub(:new)
     expect(R10K::Puppetfile).to receive(:new).with(full_puppet_dir, full_module_path, full_puppetfile_path).once
-    R10K::Task::Puppetfile::Sync.stub(:new).and_call_original
-    expect(R10K::Task::Puppetfile::Sync).to receive(:new).once
+    R10K::Action::Puppetfile::Sync.stub(:new).and_call_original
+    expect(R10K::Action::Puppetfile::Sync).to receive(:new).once
     runner = R10K::TaskRunner.new([])
     R10K::TaskRunner.stub(:new).and_return(runner)
     R10K::TaskRunner.stub(:append_task).and_call_original

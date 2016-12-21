@@ -1,5 +1,13 @@
 GIT
-  remote: git://github.com/jantman/vagrant-spec.git
+  remote: https://github.com/jantman/rspec-matcher-num-times.git
+  revision: 03409dfc6a96bb8b3c7c60d8b28ccd20b02cc8c0
+  branch: rspec2
+  specs:
+    rspec-matcher-num-times (0.0.1)
+      rspec (>= 2.0)
+
+GIT
+  remote: https://github.com/jantman/vagrant-spec
   revision: d85c6fd2887358b7adc145cf89a4bfb420f7f714
   ref: junit_and_env
   specs:
@@ -10,41 +18,33 @@ GIT
       thor (~> 0.18.1)
 
 GIT
-  remote: https://github.com/jantman/rspec-matcher-num-times.git
-  revision: 03409dfc6a96bb8b3c7c60d8b28ccd20b02cc8c0
-  branch: rspec2
-  specs:
-    rspec-matcher-num-times (0.0.1)
-      rspec (>= 2.0)
-
-GIT
   remote: https://github.com/mitchellh/vagrant.git
-  revision: 78ea5e4a78ce644717ab16d8001ab77430168f0f
-  tag: v1.7.4
+  revision: a3b9d231ade60868219062ceae54443b6e0e1b5b
+  branch: master
   specs:
-    vagrant (1.7.4)
-      bundler (>= 1.5.2, <= 1.10.5)
+    vagrant (1.9.2.dev)
       childprocess (~> 0.5.0)
       erubis (~> 2.7.0)
       hashicorp-checkpoint (~> 0.1.1)
       i18n (>= 0.6.0, <= 0.8.0)
-      listen (~> 3.0.2)
+      listen (~> 3.1.5)
       log4r (~> 1.1.9, < 1.1.11)
       net-scp (~> 1.1.0)
       net-sftp (~> 2.1)
-      net-ssh (>= 2.6.6, < 2.10.0)
-      nokogiri (= 1.6.3.1)
+      net-ssh (~> 3.0.1)
+      nokogiri (= 1.6.7.1)
       rb-kqueue (~> 0.2.0)
-      rest-client (>= 1.6.0, < 2.0)
+      rest-client (>= 1.6.0, < 3.0)
+      ruby_dep (<= 1.3.1)
       wdm (~> 0.1.0)
-      winrm (~> 1.3)
-      winrm-fs (~> 0.2.0)
+      winrm (~> 1.6)
+      winrm-fs (~> 0.3.0)
 
 PATH
   remote: .
   specs:
     vagrant-r10k (0.4.1)
-      r10k (~> 1.5.0)
+      r10k (~> 2.5.0)
 
 GEM
   remote: https://rubygems.org/
@@ -61,69 +61,82 @@ GEM
       colored (~> 1.2)
     diff-lcs (1.2.5)
     docile (1.1.5)
-    domain_name (0.5.25)
+    domain_name (0.5.20161129)
       unf (>= 0.0.5, < 1.0.0)
     erubis (2.7.0)
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
-    faraday_middleware (0.9.2)
-      faraday (>= 0.7.4, < 0.10)
-    faraday_middleware-multi_json (0.0.6)
-      faraday_middleware
-      multi_json
+    faraday_middleware (0.10.1)
+      faraday (>= 0.7.4, < 1.0)
+    fast_gettext (1.1.0)
     ffi (1.9.10)
+    gettext (3.2.2)
+      locale (>= 2.0.5)
+      text (>= 1.3.0)
+    gettext-setup (0.10)
+      fast_gettext (~> 1.1.0)
+      gettext (>= 3.0.2)
     gssapi (1.2.0)
       ffi (>= 1.0.1)
     gyoku (1.3.1)
       builder (>= 2.1.2)
     hashicorp-checkpoint (0.1.4)
-    http-cookie (1.0.2)
+    http-cookie (1.0.3)
       domain_name (~> 0.5)
-    httpclient (2.6.0.1)
+    httpclient (2.8.3)
     i18n (0.7.0)
     json (1.8.3)
-    json_pure (1.8.3)
-    listen (3.0.3)
-      rb-fsevent (>= 0.9.3)
-      rb-inotify (>= 0.9)
+    listen (3.1.5)
+      rb-fsevent (~> 0.9, >= 0.9.4)
+      rb-inotify (~> 0.9, >= 0.9.7)
+      ruby_dep (~> 1.2)
     little-plugger (1.1.4)
+    locale (2.1.2)
     log4r (1.1.10)
-    logging (1.8.2)
-      little-plugger (>= 1.1.3)
-      multi_json (>= 1.8.4)
-    mime-types (2.6.2)
-    mini_portile (0.6.0)
-    multi_json (1.11.2)
+    logging (2.1.0)
+      little-plugger (~> 1.1)
+      multi_json (~> 1.10)
+    mime-types (3.1)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2016.0521)
+    mini_portile2 (2.0.0)
+    minitar (0.5.4)
+    multi_json (1.12.1)
     multipart-post (2.0.0)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
     net-sftp (2.1.2)
       net-ssh (>= 2.6.5)
-    net-ssh (2.9.2)
-    netrc (0.10.3)
-    nokogiri (1.6.3.1)
-      mini_portile (= 0.6.0)
+    net-ssh (3.0.2)
+    netrc (0.11.0)
+    nokogiri (1.6.7.1)
+      mini_portile2 (~> 2.0.0.rc2)
     nori (2.6.0)
-    r10k (1.5.1)
+    puppet_forge (2.2.2)
+      faraday (~> 0.9.0)
+      faraday_middleware (>= 0.9.0, < 0.11.0)
+      gettext-setup (>= 0.3)
+      minitar
+      semantic_puppet (~> 0.1.0)
+    r10k (2.5.1)
       colored (= 1.2)
       cri (~> 2.6.1)
-      faraday (~> 0.9.0)
-      faraday_middleware (~> 0.9.0)
-      faraday_middleware-multi_json (~> 0.0.6)
-      json_pure (~> 1.8)
+      gettext-setup (~> 0.5)
       log4r (= 1.1.10)
+      minitar
       multi_json (~> 1.10)
+      puppet_forge (~> 2.2)
       semantic_puppet (~> 0.1.0)
     rake (10.4.2)
-    rb-fsevent (0.9.6)
-    rb-inotify (0.9.5)
+    rb-fsevent (0.9.8)
+    rb-inotify (0.9.7)
       ffi (>= 0.5.0)
     rb-kqueue (0.2.4)
       ffi (>= 0.5.0)
-    rest-client (1.8.0)
+    rest-client (2.0.0)
       http-cookie (>= 1.0.2, < 2.0)
-      mime-types (>= 1.16, < 3.0)
-      netrc (~> 0.7)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     rspec (2.99.0)
       rspec-core (~> 2.99.0)
       rspec-expectations (~> 2.99.0)
@@ -135,35 +148,36 @@ GEM
     rspec_junit_formatter (0.2.3)
       builder (< 4)
       rspec-core (>= 2, < 4, != 2.12.0)
-    rubyntlm (0.4.0)
-    rubyzip (1.1.7)
-    semantic_puppet (0.1.1)
+    ruby_dep (1.3.1)
+    rubyntlm (0.6.1)
+    rubyzip (1.2.0)
+    semantic_puppet (0.1.4)
+      gettext-setup (>= 0.3)
     simplecov (0.10.0)
       docile (~> 1.1.0)
       json (~> 1.8)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.0)
+    text (1.3.1)
     thor (0.18.1)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.1)
+    unf_ext (0.0.7.2)
     url (0.3.2)
-    uuidtools (2.1.5)
     wdm (0.1.1)
-    winrm (1.3.4)
+    winrm (1.8.1)
       builder (>= 2.1.2)
       gssapi (~> 1.2)
       gyoku (~> 1.0)
       httpclient (~> 2.2, >= 2.2.0.2)
-      logging (~> 1.6, >= 1.6.1)
+      logging (>= 1.6.1, < 3.0)
       nori (~> 2.0)
-      rubyntlm (~> 0.4.0)
-      uuidtools (~> 2.1.2)
-    winrm-fs (0.2.2)
+      rubyntlm (~> 0.6.0)
+    winrm-fs (0.3.2)
       erubis (~> 2.7)
-      logging (~> 1.6, >= 1.6.1)
+      logging (>= 1.6.1, < 3.0)
       rubyzip (~> 1.1)
-      winrm (~> 1.3.0)
+      winrm (~> 1.5)
 
 PLATFORMS
   ruby
@@ -178,3 +192,6 @@ DEPENDENCIES
   vagrant!
   vagrant-r10k!
   vagrant-spec!
+
+BUNDLED WITH
+   1.13.6

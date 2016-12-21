@@ -1,10 +1,13 @@
 require_relative 'base'
+require 'puppet_forge'
 
 module VagrantPlugins
   module R10k
     module Action
       # run r10k deploy
       class Deploy < Base
+
+        PuppetForge.user_agent = "vagrant-r10k/2.5.0"
 
         # determine if we should run, and get config
         def call(env)
@@ -39,8 +42,8 @@ module VagrantPlugins
         # run the actual r10k deploy
         def deploy(env, config)
           @logger.debug("vagrant::r10k::deploy.deploy called")
-          require 'r10k/task_runner'
-          require 'r10k/task/puppetfile'
+          require 'r10k/action/runner'
+          require 'r10k/action/puppetfile'
 
           env[:ui].info "vagrant-r10k: Beginning r10k deploy of puppet modules into #{config[:module_path]} using #{config[:puppetfile_path]}"
 
@@ -59,7 +62,7 @@ module VagrantPlugins
           begin
             puppetfile = get_puppetfile(config)
             @logger.debug("vagrant-r10k: creating Puppetfile::Sync task")
-            task   = R10K::Task::Puppetfile::Sync.new(puppetfile)
+            task   = R10K::Action::Puppetfile::Sync.new(puppetfile)
             @logger.debug("vagrant-r10k: appending task to runner queue")
             runner.append_task task
             @logger.debug("vagrant-r10k: running sync task")
