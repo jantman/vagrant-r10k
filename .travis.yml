@@ -8,7 +8,7 @@ script: bundle _${BUNDLER_VERSION}_ exec rspec --color --format documentation
 notifications:
   email: true
 rvm:
-  - 2.0.0
+  - 2.2
 env:
   global:
     - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
