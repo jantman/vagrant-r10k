@@ -6,12 +6,14 @@
 [![Gem Version](https://img.shields.io/gem/v/vagrant-r10k.svg)](https://rubygems.org/gems/vagrant-r10k)
 [![Total Downloads](https://img.shields.io/gem/dt/vagrant-r10k.svg)](https://rubygems.org/gems/vagrant-r10k)
 [![Github Issues](https://img.shields.io/github/issues/jantman/vagrant-r10k.svg)](https://github.com/jantman/vagrant-r10k/issues)
-[![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/0.1.0/active.svg)](http://www.repostatus.org/#active)
+[![Project Status: Unsupported – The project has reached a stable, usable state but the author(s) have ceased all work on it. A new maintainer may be desired.](http://www.repostatus.org/badges/2.0.0/unsupported.svg)](http://www.repostatus.org/#unsupported)
 
 vagrant-r10k is a [Vagrant](http://www.vagrantup.com/) 1.2+ middleware plugin to allow you to have just a Puppetfile and
 manifests in your vagrant project, and pull in the required modules via [r10k](https://github.com/adrienthebo/r10k). This
 plugin only works with the 'puppet' provisioner, not a puppet server. It expects you to have a Puppetfile in the same repository
 as your Vagrantfile.
+
+__Important Note:__ I no longer use this project anywhere, and am no longer able to maintain it. If anyone is interested in taking over as maintainer, please contact me.
 
 ## Installation
 
