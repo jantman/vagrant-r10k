@@ -15,18 +15,6 @@ describe Log4r::Logger do
       expect(subject).to receive(:debug).with('different message').once
       subject.debug2('different message')
     end
-  end 
-end
-
-describe R10K::TaskRunner do
-  subject { described_class.new([]) }
-  describe '#get_errors' do
-    it 'returns @errors' do
-      subject.instance_variable_set(:@errors, ['foo'])
-      expect(subject).to receive(:get_errors).once.and_call_original
-      foo = subject.get_errors
-      expect(foo).to eq(['foo'])
-    end
   end
 end
 

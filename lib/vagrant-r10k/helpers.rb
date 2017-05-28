@@ -18,16 +18,6 @@ module Log4r
   end
 end
 
-# patch this so we can get programmatic access to the errors
-module R10K
-  # patch this so we can get programmatic access to the errors
-  class TaskRunner
-    def get_errors
-      @errors
-    end
-  end
-end
-
 module VagrantPlugins
   module R10k
     # General-use vagrant-r10k helper methosd
